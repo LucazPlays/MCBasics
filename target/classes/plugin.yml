@@ -1,0 +1,112 @@
+name: EssentialCommands
+version: 1.0.0
+main: com.essentials.commands.EssentialCommands
+api-version: 1.21
+description: Essential commands plugin for Minecraft Paper 1.21.11
+
+commands:
+  vanish:
+    description: Toggle vanish mode
+    usage: /vanish [player]
+  gm:
+    description: Change gamemode
+    usage: /gm <0/1/2/3> [player]
+  gmc:
+    description: Change to creative mode
+    usage: /gmc [player]
+  gms:
+    description: Change to survival mode
+    usage: /gms [player]
+  gma:
+    description: Change to adventure mode
+    usage: /gma [player]
+  gmsp:
+    description: Change to spectator mode
+    usage: /gmsp [player]
+  invsee:
+    description: View another player's inventory
+    usage: /invsee <player>
+  tphere:
+    description: Teleport a player to you
+    usage: /tphere <player>
+  feed:
+    description: Fill your hunger bar
+    usage: /feed [player]
+  heal:
+    description: Heal yourself or another player
+    usage: /heal [player]
+  speed:
+    description: Set walking speed
+    usage: /speed <1-10> [player]
+  fly:
+    description: Toggle flight
+    usage: /fly [player]
+  unsafeenchant:
+    description: Add any enchantment at any level
+    usage: /unsafeenchant <enchantment> <level> [player]
+
+permissions:
+  essentials.*:
+    description: All essential permissions
+    children:
+      essentials.vanish: true
+      essentials.vanish.see: true
+      essentials.gm: true
+      essentials.gm.others: true
+      essentials.invsee: true
+      essentials.tphere: true
+      essentials.feed: true
+      essentials.feed.others: true
+      essentials.heal: true
+      essentials.heal.others: true
+      essentials.speed: true
+      essentials.speed.others: true
+      essentials.fly: true
+      essentials.fly.others: true
+      essentials.unsafeenchant: true
+
+  essentials.vanish:
+    description: Allows use of /vanish
+    default: op
+  essentials.vanish.see:
+    description: Allows seeing vanished players
+    default: op
+  essentials.gm:
+    description: Allows use of /gm
+    default: op
+  essentials.gm.others:
+    description: Allows changing other players' gamemode
+    default: op
+  essentials.invsee:
+    description: Allows use of /invsee
+    default: op
+  essentials.tphere:
+    description: Allows use of /tphere
+    default: op
+  essentials.feed:
+    description: Allows use of /feed
+    default: true
+  essentials.feed.others:
+    description: Allows feeding other players
+    default: op
+  essentials.heal:
+    description: Allows use of /heal
+    default: true
+  essentials.heal.others:
+    description: Allows healing other players
+    default: op
+  essentials.speed:
+    description: Allows use of /speed
+    default: true
+  essentials.speed.others:
+    description: Allows changing other players' speed
+    default: op
+  essentials.fly:
+    description: Allows use of /fly
+    default: true
+  essentials.fly.others:
+    description: Allows toggling flight for other players
+    default: op
+  essentials.unsafeenchant:
+    description: Allows use of /unsafeenchant
+    default: op

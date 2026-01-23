@@ -19,12 +19,12 @@ public class UnsafeEnchantCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.UNSAFEENCHANT)) {
-            sender.sendMessage(Message.get("general.no_permission", ""));
+            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.get("unsafeenchant.usage", ""));
+            sender.sendMessage(Message.get("unsafeenchant.usage", "&cUsage: /unsafeenchant <enchantment> <level> [player]"));
             return true;
         }
 
@@ -34,17 +34,17 @@ public class UnsafeEnchantCommand implements CommandExecutor {
         try {
             level = Integer.parseInt(args[1]);
             if (level < 0) {
-                sender.sendMessage(Message.get("unsafeenchant.level_negative", ""));
+                sender.sendMessage(Message.get("unsafeenchant.level_negative", "&cLevel cannot be negative!"));
                 return true;
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(Message.get("unsafeenchant.invalid_level", ""));
+            sender.sendMessage(Message.get("unsafeenchant.invalid_level", "&cInvalid level!"));
             return true;
         }
 
         Enchantment enchantment = getEnchantmentByName(enchantmentName);
         if (enchantment == null) {
-            sender.sendMessage(Message.get("unsafeenchant.invalid_enchantment", ""));
+            sender.sendMessage(Message.get("unsafeenchant.invalid_enchantment", "&cInvalid enchantment!"));
             return true;
         }
 
@@ -52,19 +52,19 @@ public class UnsafeEnchantCommand implements CommandExecutor {
         if (args.length > 2) {
             target = Bukkit.getPlayer(args[2]);
             if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", ""));
+                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage(Message.get("general.specify_player", ""));
+            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
             return true;
         }
 
         ItemStack item = target.getInventory().getItemInMainHand();
         if (item == null || item.getType() == org.bukkit.Material.AIR) {
-            sender.sendMessage(Message.get("unsafeenchant.no_item", ""));
+            sender.sendMessage(Message.get("unsafeenchant.no_item", "&cYou must hold an item!"));
             return true;
         }
 
@@ -79,9 +79,9 @@ public class UnsafeEnchantCommand implements CommandExecutor {
             item.addEnchantment(enchantment, level);
         }
 
-        sender.sendMessage(Message.get("unsafeenchant.enchanted", "", "enchant", enchantmentName, "level", String.valueOf(level)));
+        sender.sendMessage(Message.get("unsafeenchant.enchanted", "Added %enchant% %level% to the item!", "enchant", enchantmentName, "level", String.valueOf(level)));
         if (target != sender) {
-            target.sendMessage(Message.get("unsafeenchant.enchanted_other", ""));
+            target.sendMessage(Message.get("unsafeenchant.enchanted_other", "Your item has been enchanted!"));
         }
 
         return true;

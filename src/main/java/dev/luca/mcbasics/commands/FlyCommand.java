@@ -13,7 +13,7 @@ public class FlyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.FLY)) {
-            sender.sendMessage(Message.get("general.no_permission", ""));
+            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
             return true;
         }
 
@@ -22,13 +22,13 @@ public class FlyCommand implements CommandExecutor {
         if (args.length > 0 && sender.hasPermission(Permission.FLY_OTHERS)) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", ""));
+                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage(Message.get("general.specify_player", ""));
+            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
             return true;
         }
 
@@ -38,14 +38,14 @@ public class FlyCommand implements CommandExecutor {
         target.setFlying(newFlyState);
 
         if (newFlyState) {
-            target.sendMessage(Message.get("fly.enabled", ""));
+            target.sendMessage(Message.get("fly.enabled", "Flight enabled!"));
             if (target != sender) {
-                sender.sendMessage(Message.get("fly.enabled_other", "", "target", target.getName()));
+                sender.sendMessage(Message.get("fly.enabled_other", "&aFlight enabled for %target%!", "target", target.getName()));
             }
         } else {
-            target.sendMessage(Message.get("fly.disabled", ""));
+            target.sendMessage(Message.get("fly.disabled", "Flight disabled!"));
             if (target != sender) {
-                sender.sendMessage(Message.get("fly.disabled_other", "", "target", target.getName()));
+                sender.sendMessage(Message.get("fly.disabled_other", "&cFlight disabled for %target%!", "target", target.getName()));
             }
         }
 

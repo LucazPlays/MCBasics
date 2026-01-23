@@ -1,6 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -12,7 +13,7 @@ public class GamemodeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("essentials.gm")) {
+        if (!sender.hasPermission(Permission.GM)) {
             sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
@@ -68,7 +69,7 @@ public class GamemodeCommand implements CommandExecutor {
             }
         }
 
-        if (args.length > 1 && sender.hasPermission("essentials.gm.others")) {
+        if (args.length > 1 && sender.hasPermission(Permission.GM_OTHERS)) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
                 sender.sendMessage(Message.get("general.player_not_found", ""));

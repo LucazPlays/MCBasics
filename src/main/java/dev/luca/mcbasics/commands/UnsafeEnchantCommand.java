@@ -1,6 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +18,7 @@ public class UnsafeEnchantCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("essentials.unsafeenchant")) {
+        if (!sender.hasPermission(Permission.UNSAFEENCHANT)) {
             sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }

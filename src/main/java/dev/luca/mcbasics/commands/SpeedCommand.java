@@ -1,6 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +12,7 @@ public class SpeedCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("essentials.speed")) {
+        if (!sender.hasPermission(Permission.SPEED)) {
             sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
@@ -36,7 +37,7 @@ public class SpeedCommand implements CommandExecutor {
         boolean isFlying = label.equalsIgnoreCase("flyspeed");
         String speedType = isFlying ? "flight" : "walking";
 
-        if (args.length > 1 && sender.hasPermission("essentials.speed.others")) {
+        if (args.length > 1 && sender.hasPermission(Permission.SPEED_OTHERS)) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
                 sender.sendMessage(Message.get("general.player_not_found", ""));

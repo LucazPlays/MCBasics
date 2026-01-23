@@ -1,11 +1,8 @@
 package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +18,7 @@ public class VanishManager {
     public static void hidePlayer(Player player) {
         vanishedPlayers.add(player);
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (!onlinePlayer.hasPermission("essentials.vanish.see")) {
+            if (!onlinePlayer.hasPermission(Permission.VANISH_SEE)) {
                 onlinePlayer.hidePlayer(player);
             }
         }

@@ -1,5 +1,6 @@
-package com.essentials.commands;
+package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +12,7 @@ public class HealCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentials.heal")) {
-            sender.sendMessage("§cYou don't have permission!");
+            sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
 
@@ -20,22 +21,22 @@ public class HealCommand implements CommandExecutor {
         if (args.length > 0 && sender.hasPermission("essentials.heal.others")) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage("§cPlayer not found!");
+                sender.sendMessage(Message.get("general.player_not_found", ""));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage("§cSpecify a player!");
+            sender.sendMessage(Message.get("general.specify_player", ""));
             return true;
         }
 
         target.setHealth(20.0);
         target.setFireTicks(0);
-        target.sendMessage("§aYou have been healed!");
+        target.sendMessage(Message.get("heal.healed", ""));
 
         if (target != sender) {
-            sender.sendMessage("§a" + target.getName() + " has been healed!");
+            sender.sendMessage(Message.get("heal.healed_other", "", "target", target.getName()));
         }
 
         return true;

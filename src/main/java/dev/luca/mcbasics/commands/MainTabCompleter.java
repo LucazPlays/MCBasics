@@ -1,4 +1,4 @@
-package com.essentials.commands;
+package dev.luca.mcbasics.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

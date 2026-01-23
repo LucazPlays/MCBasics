@@ -1,21 +1,26 @@
-package com.essentials.commands;
+package dev.luca.mcbasics;
 
+import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.commands.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class EssentialCommands extends JavaPlugin {
+public final class MCBasics extends JavaPlugin {
 
-    private static EssentialCommands instance;
+    private static MCBasics instance;
 
     @Override
     public void onEnable() {
         instance = this;
-        getLogger().info("EssentialCommands plugin enabled!");
+        Message.init(this);
+        getLogger().info("MCBasics plugin enabled!");
+        getLogger().info("Loaded " + dev.luca.minecraftapi.MessageAPI.getLoadedMessageCount() + " messages");
         registerCommands();
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("EssentialCommands plugin disabled!");
+        dev.luca.minecraftapi.MessageAPI.disableAutoReload();
+        getLogger().info("MCBasics plugin disabled!");
     }
 
     private void registerCommands() {
@@ -57,7 +62,7 @@ public final class EssentialCommands extends JavaPlugin {
         getCommand("unsafeenchant").setTabCompleter(tabCompleter);
     }
 
-    public static EssentialCommands getInstance() {
+    public static MCBasics getInstance() {
         return instance;
     }
 }

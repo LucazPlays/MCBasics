@@ -1,5 +1,6 @@
-package com.essentials.commands;
+package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
@@ -12,7 +13,7 @@ public class GamemodeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentials.gm")) {
-            sender.sendMessage("§cYou don't have permission!");
+            sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
 
@@ -30,14 +31,14 @@ public class GamemodeCommand implements CommandExecutor {
         } else {
             if (args.length == 0) {
                 if (!(sender instanceof Player)) {
-                    sender.sendMessage("§cUsage: /gm <0/1/2/3> [player]");
+                    sender.sendMessage(Message.get("general.specify_player", ""));
                     return true;
                 }
                 target = (Player) sender;
             } else {
                 target = Bukkit.getPlayer(args[0]);
                 if (target == null) {
-                    sender.sendMessage("§cPlayer not found!");
+                    sender.sendMessage(Message.get("general.player_not_found", ""));
                     return true;
                 }
             }
@@ -58,11 +59,11 @@ public class GamemodeCommand implements CommandExecutor {
                         mode = GameMode.SPECTATOR;
                         break;
                     default:
-                        sender.sendMessage("§cInvalid gamemode! Use 0, 1, 2, or 3");
+                        sender.sendMessage(Message.get("gamemode.invalid_mode", ""));
                         return true;
                 }
             } catch (NumberFormatException e) {
-                sender.sendMessage("§cInvalid gamemode number!");
+                sender.sendMessage(Message.get("gamemode.use_numbers", ""));
                 return true;
             }
         }
@@ -70,31 +71,34 @@ public class GamemodeCommand implements CommandExecutor {
         if (args.length > 1 && sender.hasPermission("essentials.gm.others")) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                sender.sendMessage("§cPlayer not found!");
+                sender.sendMessage(Message.get("general.player_not_found", ""));
                 return true;
             }
         } else if (!(sender instanceof Player) && label.equalsIgnoreCase("gm")) {
-            sender.sendMessage("§cSpecify a player!");
+            sender.sendMessage(Message.get("general.specify_player", ""));
             return true;
         } else if (label.equalsIgnoreCase("gm")) {
             target = (Player) sender;
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage("§cYou must specify a player!");
+            sender.sendMessage(Message.get("general.specify_player", ""));
             return true;
         }
 
         if (target == null) {
-            sender.sendMessage("§cTarget player not found!");
+            sender.sendMessage(Message.get("general.player_not_found", ""));
             return true;
         }
 
         target.setGameMode(mode);
         String modeName = mode.name().toLowerCase();
-        target.sendMessage("§aYour gamemode has been set to " + modeName + "!");
+        String modeKey = "gamemode.mode_names." + modeName;
+        String localizedMode = Message.get(modeKey, modeName, "mode", modeName);
+
+        target.sendMessage(Message.get("gamemode.set_to", "", "mode", localizedMode));
         if (target != sender) {
-            sender.sendMessage("§a" + target.getName() + "'s gamemode set to " + modeName + "!");
+            sender.sendMessage(Message.get("gamemode.set_other", "", "target", target.getName(), "mode", localizedMode));
         }
 
         return true;

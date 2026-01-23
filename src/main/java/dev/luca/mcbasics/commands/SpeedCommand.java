@@ -1,5 +1,6 @@
-package com.essentials.commands;
+package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +12,7 @@ public class SpeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentials.speed")) {
-            sender.sendMessage("§cYou don't have permission!");
+            sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
 
@@ -22,12 +23,12 @@ public class SpeedCommand implements CommandExecutor {
             try {
                 int speedInt = Integer.parseInt(args[0]);
                 if (speedInt < 1 || speedInt > 10) {
-                    sender.sendMessage("§cSpeed must be between 1 and 10!");
+                    sender.sendMessage(Message.get("speed.invalid_speed", ""));
                     return true;
                 }
                 speed = speedInt / 10.0f;
             } catch (NumberFormatException e) {
-                sender.sendMessage("§cInvalid speed number!");
+                sender.sendMessage(Message.get("speed.invalid_speed", ""));
                 return true;
             }
         }
@@ -38,13 +39,13 @@ public class SpeedCommand implements CommandExecutor {
         if (args.length > 1 && sender.hasPermission("essentials.speed.others")) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                sender.sendMessage("§cPlayer not found!");
+                sender.sendMessage(Message.get("general.player_not_found", ""));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage("§cSpecify a player!");
+            sender.sendMessage(Message.get("general.specify_player", ""));
             return true;
         }
 
@@ -54,10 +55,18 @@ public class SpeedCommand implements CommandExecutor {
             target.setWalkSpeed(speed);
         }
 
-        target.sendMessage("§aYour " + speedType + " speed has been set to " + (int)(speed * 10) + "!");
+        String speedNum = Message.get("speed.speed_number", String.valueOf((int)(speed * 10)), "speed", String.valueOf((int)(speed * 10)));
 
-        if (target != sender) {
-            sender.sendMessage("§a" + target.getName() + "'s " + speedType + " speed set to " + (int)(speed * 10) + "!");
+        if (isFlying) {
+            target.sendMessage(Message.get("speed.flight_set", "", "speed", speedNum));
+            if (target != sender) {
+                sender.sendMessage(Message.get("speed.flight_set_other", "", "target", target.getName(), "speed", speedNum));
+            }
+        } else {
+            target.sendMessage(Message.get("speed.walking_set", "", "speed", speedNum));
+            if (target != sender) {
+                sender.sendMessage(Message.get("speed.walking_set_other", "", "target", target.getName(), "speed", speedNum));
+            }
         }
 
         return true;

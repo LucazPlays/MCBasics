@@ -1,6 +1,6 @@
-name: EssentialCommands
+name: MCBasics
 version: 1.0.0
-main: com.essentials.commands.EssentialCommands
+main: dev.luca.mcbasics.MCBasics
 api-version: 1.21
 description: Essential commands plugin for Minecraft Paper 1.21.11
 

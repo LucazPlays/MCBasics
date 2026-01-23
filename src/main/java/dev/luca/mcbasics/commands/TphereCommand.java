@@ -1,5 +1,6 @@
-package com.essentials.commands;
+package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,36 +12,36 @@ public class TphereCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("essentials.tphere")) {
-            sender.sendMessage("§cYou don't have permission!");
+            sender.sendMessage(Message.get("general.no_permission", ""));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage("§cUsage: /tphere <player>");
+            sender.sendMessage(Message.get("tphere.usage", "/tphere <player>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage("§cPlayer not found!");
+            sender.sendMessage(Message.get("general.player_not_found", ""));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage("§cYou must be a player to teleport others to you!");
+            sender.sendMessage(Message.get("general.must_be_player", ""));
             return true;
         }
 
         Player teleporter = (Player) sender;
 
         if (target.equals(teleporter)) {
-            sender.sendMessage("§cYou can't teleport yourself!");
+            sender.sendMessage(Message.get("general.you_cant_target_self", ""));
             return true;
         }
 
         target.teleport(teleporter.getLocation());
-        target.sendMessage("§aYou have been teleported to " + teleporter.getName() + "!");
-        teleporter.sendMessage("§a" + target.getName() + " has been teleported to you!");
+        target.sendMessage(Message.get("tphere.you_teleported", "", "sender", teleporter.getName()));
+        teleporter.sendMessage(Message.get("tphere.teleported", "", "target", target.getName()));
 
         return true;
     }

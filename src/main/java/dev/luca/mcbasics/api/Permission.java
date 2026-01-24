@@ -5,30 +5,31 @@ public final class Permission {
     private Permission() {}
 
     // Vanish permissions
-    public static final String VANISH = "essentials.vanish";
-    public static final String VANISH_SEE = "essentials.vanish.see";
+    public static final String VANISH = "mcbasics.vanish";
+    public static final String VANISH_SEE = "mcbasics.vanish.see";
 
     // Gamemode permissions
-    public static final String GM = "essentials.gm";
-    public static final String GM_OTHERS = "essentials.gm.others";
-    public static final String GMC = "essentials.gmc";
-    public static final String GMS = "essentials.gms";
-    public static final String GMA = "essentials.gma";
-    public static final String GMSP = "essentials.gmsp";
+    public static final String GM = "mcbasics.gm";
+    public static final String GM_OTHERS = "mcbasics.gm.others";
+    public static final String GMC = "mcbasics.gmc";
+    public static final String GMS = "mcbasics.gms";
+    public static final String GMA = "mcbasics.gma";
+    public static final String GMSP = "mcbasics.gmsp";
 
     // Other command permissions
-    public static final String INVSEE = "essentials.invsee";
-    public static final String TPHERE = "essentials.tphere";
-    public static final String FEED = "essentials.feed";
-    public static final String FEED_OTHERS = "essentials.feed.others";
-    public static final String HEAL = "essentials.heal";
-    public static final String HEAL_OTHERS = "essentials.heal.others";
-    public static final String SPEED = "essentials.speed";
-    public static final String SPEED_OTHERS = "essentials.speed.others";
-    public static final String FLY = "essentials.fly";
-    public static final String FLY_OTHERS = "essentials.fly.others";
-    public static final String UNSAFEENCHANT = "essentials.unsafeenchant";
+    public static final String INVSEE = "mcbasics.invsee";
+    public static final String TPHERE = "mcbasics.tphere";
+    public static final String FEED = "mcbasics.feed";
+    public static final String FEED_OTHERS = "mcbasics.feed.others";
+    public static final String HEAL = "mcbasics.heal";
+    public static final String HEAL_OTHERS = "mcbasics.heal.others";
+    public static final String SPEED = "mcbasics.speed";
+    public static final String SPEED_OTHERS = "mcbasics.speed.others";
+    public static final String FLY = "mcbasics.fly";
+    public static final String FLY_OTHERS = "mcbasics.fly.others";
+    public static final String UNSAFEENCHANT = "mcbasics.unsafeenchant";
+    public static final String HELP = "mcbasics.help";
 
     // Wildcard permission
-    public static final String ALL = "essentials.*";
+    public static final String ALL = "mcbasics.*";
 }

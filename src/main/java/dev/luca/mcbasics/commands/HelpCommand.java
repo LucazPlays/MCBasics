@@ -18,7 +18,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     private static final CommandInfo[] COMMANDS = {
-            new CommandInfo("help", "Show help menu", Permission.ALL),
+            new CommandInfo("help", "Show help menu", Permission.HELP),
             new CommandInfo("feed [player]", "Restore hunger", Permission.FEED),
             new CommandInfo("heal [player]", "Restore health", Permission.HEAL),
             new CommandInfo("fly [player]", "Toggle flight", Permission.FLY),

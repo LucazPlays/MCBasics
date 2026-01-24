@@ -33,6 +33,9 @@ public final class MCBasics extends JavaPlugin {
     private void registerCommands() {
         MainTabCompleter tabCompleter = new MainTabCompleter();
 
+        getCommand("help").setExecutor(new HelpCommand());
+        getCommand("help").setTabCompleter(new HelpCommand());
+
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("vanish").setTabCompleter(tabCompleter);
 

@@ -5,6 +5,9 @@ api-version: 1.21
 description: Essential commands plugin for Minecraft Paper 1.21.11
 
 commands:
+  help:
+    description: Show the help menu
+    usage: /help [page]
   vanish:
     description: Toggle vanish mode
     usage: /vanish [player]

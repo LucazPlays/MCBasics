@@ -2,6 +2,10 @@ package dev.luca.mcbasics;
 
 import dev.luca.mcbasics.api.Message;
 import dev.luca.mcbasics.commands.*;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import top.insights.deployment.MinecraftSelfUpdater;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,9 +23,43 @@ public final class MCBasics extends JavaPlugin {
 
         MinecraftSelfUpdater.start(this, PROJECT_UUID, PROJECT_KEY, true);
 
+        registerCommands();
+
         getLogger().info("MCBasics plugin enabled!");
         getLogger().info("Loaded " + dev.luca.minecraftapi.MessageAPI.getLoadedMessageCount() + " messages");
-        registerCommands();
+
+        broadcastStartup();
+    }
+
+    private void broadcastStartup() {
+        Component mcbasics = Component.text()
+                .append(Component.text("M", TextColor.fromHexString("#ff6b6b")))
+                .append(Component.text("C", TextColor.fromHexString("#feca57")))
+                .append(Component.text("B", TextColor.fromHexString("#48dbfb")))
+                .append(Component.text("a", TextColor.fromHexString("#ff9ff3")))
+                .append(Component.text("s", TextColor.fromHexString("#54a0ff")))
+                .append(Component.text("i", TextColor.fromHexString("#5f27cd")))
+                .append(Component.text("c", TextColor.fromHexString("#ff6b6b")))
+                .append(Component.text("s", TextColor.fromHexString("#feca57")))
+                .build();
+
+        Component fullMessage = Component.text()
+                .append(Component.text("╔═══════════════════════════════════════════════════╗\n", NamedTextColor.GOLD))
+                .append(Component.text("║  ", NamedTextColor.GOLD))
+                .append(mcbasics)
+                .append(Component.text(" has been loaded!", NamedTextColor.GREEN))
+                .append(Component.text("  ║\n", NamedTextColor.GOLD))
+                .append(Component.text("║  Version: ", NamedTextColor.GOLD))
+                .append(Component.text("1.0.0", NamedTextColor.YELLOW))
+                .append(Component.text("  •  ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("Type ", NamedTextColor.GRAY))
+                .append(Component.text("/help", NamedTextColor.GOLD))
+                .append(Component.text(" for commands", NamedTextColor.GRAY))
+                .append(Component.text("  ║\n", NamedTextColor.GOLD))
+                .append(Component.text("╚═══════════════════════════════════════════════════╝", NamedTextColor.GOLD))
+                .build();
+
+        Bukkit.broadcast(fullMessage);
     }
 
     @Override

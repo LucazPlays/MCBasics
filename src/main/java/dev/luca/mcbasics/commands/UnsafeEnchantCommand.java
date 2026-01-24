@@ -9,12 +9,29 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UnsafeEnchantCommand implements CommandExecutor {
+
+    private static final Method ADD_ENCHANTMENT_METHOD;
+
+    static {
+        Method method = null;
+        try {
+            method = ItemMeta.class.getMethod("addUnsafeEnchantment", Enchantment.class, int.class);
+        } catch (NoSuchMethodException e) {
+            try {
+                method = ItemMeta.class.getMethod("addEnchant", Enchantment.class, int.class, boolean.class);
+            } catch (NoSuchMethodException ex) {
+                method = null;
+            }
+        }
+        ADD_ENCHANTMENT_METHOD = method;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -68,15 +85,11 @@ public class UnsafeEnchantCommand implements CommandExecutor {
             return true;
         }
 
-        try {
-            Field maxLevelField = Enchantment.class.getDeclaredField("maxLevel");
-            maxLevelField.setAccessible(true);
-            int originalMax = maxLevelField.getInt(enchantment);
-            maxLevelField.setInt(enchantment, Short.MAX_VALUE);
-            item.addEnchantment(enchantment, level);
-            maxLevelField.setInt(enchantment, originalMax);
-        } catch (Exception e) {
-            item.addEnchantment(enchantment, level);
+        boolean success = addUnsafeEnchantment(item, enchantment, level);
+
+        if (!success) {
+            sender.sendMessage(Message.get("unsafeenchant.failed", "&cFailed to add enchantment!"));
+            return true;
         }
 
         sender.sendMessage(Message.get("unsafeenchant.enchanted", "Added %enchant% %level% to the item!", "enchant", enchantmentName, "level", String.valueOf(level)));
@@ -85,6 +98,29 @@ public class UnsafeEnchantCommand implements CommandExecutor {
         }
 
         return true;
+    }
+
+    private boolean addUnsafeEnchantment(ItemStack item, Enchantment enchantment, int level) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return false;
+        }
+
+        try {
+            if (ADD_ENCHANTMENT_METHOD != null) {
+                if (ADD_ENCHANTMENT_METHOD.getParameterCount() == 2) {
+                    ADD_ENCHANTMENT_METHOD.invoke(meta, enchantment, level);
+                } else if (ADD_ENCHANTMENT_METHOD.getParameterCount() == 3) {
+                    ADD_ENCHANTMENT_METHOD.invoke(meta, enchantment, level, true);
+                }
+            } else {
+                meta.addEnchant(enchantment, level, true);
+            }
+            item.setItemMeta(meta);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private Enchantment getEnchantmentByName(String name) {

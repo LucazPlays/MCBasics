@@ -3,7 +3,6 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
@@ -12,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HelpCommand implements CommandExecutor, TabCompleter {
@@ -32,7 +30,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("gmsp [p]", "Spectator mode", Permission.GMSP),
             new CommandInfo("vanish [p]", "Toggle vanish", Permission.VANISH),
             new CommandInfo("invsee <p>", "View inventory", Permission.INVSEE),
-            new CommandInfo("tphere <p>", "Teleport to you", Permission.TPHERE),
+            new CommandInfo("tphere <p]", "Teleport to you", Permission.TPHERE),
             new CommandInfo("unsafeenchant <ench> <lvl>", "Add enchant", Permission.UNSAFEENCHANT)
     };
 
@@ -61,44 +59,92 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
         int startIndex = (page - 1) * COMMANDS_PER_PAGE;
         int endIndex = Math.min(startIndex + COMMANDS_PER_PAGE, COMMANDS.length);
 
-        StringBuilder sb = new StringBuilder();
+        Component header = miniMessage.deserialize("<gradient:#ff6b6b:#feca57:#48dbfb:#ff9ff3:#54a0ff:#5f27cd>✦ MCBasics Help ✦</gradient>\n");
+        Component divider = miniMessage.deserialize("<gray>────────────────────────────</gray>\n");
 
-        sb.append("<gradient:#ff6b6b:#feca57:#48dbfb:#ff9ff3:#54a0ff:#5f27cd>✦ MCBasics Help ✦</gradient>\n");
-        sb.append("<gray>────────────────────────────</gray>\n");
+        List<Component> parts = new ArrayList<>();
+        parts.add(header);
+        parts.add(divider);
 
         for (int i = startIndex; i < endIndex; i++) {
             CommandInfo cmd = COMMANDS[i];
             boolean hasPerm = senderHasPermission(sender, cmd.permission);
 
-            String icon = hasPerm ? "<green>➜</green>" : "<dark_gray>⊘</dark_gray>";
-            String cmdColor = hasPerm ? "<yellow>" : "<dark_gray>";
-            String descColor = hasPerm ? "<gray>" : "<dark_gray>";
+            Component hoverText = Component.text()
+                    .append(Component.text("Permission: ", NamedTextColor.GOLD))
+                    .append(Component.text(cmd.permission, NamedTextColor.RED))
+                    .build();
 
-            sb.append(icon).append(" <aqua>/").append(cmd.command).append("</aqua> ")
-              .append(cmdColor).append(cmd.description).append("</")
-              .append(hasPerm ? "yellow" : "dark_gray").append(">\n");
-            sb.append("   <dark_gray>└</dark_gray> <red>").append(cmd.permission).append("</red>\n");
+            Component cmdLine = Component.text()
+                    .append(Component.text(hasPerm ? "➜" : "⊘", hasPerm ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY))
+                    .append(Component.text(" /", NamedTextColor.AQUA))
+                    .append(Component.text(cmd.command, hasPerm ? NamedTextColor.YELLOW : NamedTextColor.DARK_GRAY))
+                    .append(Component.text(" ", NamedTextColor.WHITE))
+                    .append(Component.text(cmd.description, hasPerm ? NamedTextColor.GRAY : NamedTextColor.DARK_GRAY))
+                    .hoverEvent(hoverText)
+                    .clickEvent(ClickEvent.suggestCommand("/" + cmd.command))
+                    .append(Component.text("\n", NamedTextColor.WHITE))
+                    .build();
+
+            Component permLine = Component.text()
+                    .append(Component.text("   └ ", NamedTextColor.DARK_GRAY))
+                    .append(Component.text(cmd.permission, NamedTextColor.RED))
+                    .append(Component.text("\n", NamedTextColor.WHITE))
+                    .build();
+
+            parts.add(cmdLine);
+            parts.add(permLine);
         }
 
-        sb.append("<gray>────────────────────────────</gray>\n");
+        parts.add(divider);
 
-        String prevPage = String.valueOf(Math.max(1, page - 1));
-        String nextPage = String.valueOf(Math.min(totalPages, page + 1));
-        String currPage = String.valueOf(page);
-        String totPage = String.valueOf(totalPages);
+        int prevPage = Math.max(1, page - 1);
+        int nextPage = Math.min(totalPages, page + 1);
 
-        String prevColor = page > 1 ? "<green>◀</green>" : "<dark_gray>◀</dark_gray>";
-        String nextColor = page < totalPages ? "<green>▶</green>" : "<dark_gray>▶</dark_gray>";
+        Component prevArrow = Component.text("◀")
+                .color(page > 1 ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY)
+                .hoverEvent(Component.text("Go to page " + prevPage, NamedTextColor.AQUA))
+                .clickEvent(ClickEvent.runCommand("/help " + prevPage));
 
-        sb.append(prevColor).append(" <aqua>Page ").append(currPage).append("/")
-          .append(totPage).append("</aqua> ").append(nextColor).append("\n");
+        Component nextArrow = Component.text("▶")
+                .color(page < totalPages ? NamedTextColor.GREEN : NamedTextColor.DARK_GRAY)
+                .hoverEvent(Component.text("Go to page " + nextPage, NamedTextColor.AQUA))
+                .clickEvent(ClickEvent.runCommand("/help " + nextPage));
 
-        sb.append("<dark_gray>└</dark_gray> <gold>/help <1-").append(totPage)
-          .append("></gold> <gray>or click arrows</gray>\n");
+        Component navLine = Component.text()
+                .append(prevArrow)
+                .append(Component.text(" Page ", NamedTextColor.AQUA))
+                .append(Component.text(String.valueOf(page), NamedTextColor.YELLOW))
+                .append(Component.text("/", NamedTextColor.WHITE))
+                .append(Component.text(String.valueOf(totalPages), NamedTextColor.YELLOW))
+                .append(Component.text(" ", NamedTextColor.WHITE))
+                .append(nextArrow)
+                .append(Component.text("\n", NamedTextColor.WHITE))
+                .build();
 
-        sb.append("<gradient:#ff6b6b:#5f27cd>v1.0.0</gradient> <gray>•</gray> <aqua>LucazPlays</aqua>");
+        parts.add(navLine);
 
-        return miniMessage.deserialize(sb.toString());
+        Component helpLink = miniMessage.deserialize("<gold>/help <1-" + totalPages + "></gold>");
+        Component navHint = Component.text()
+                .append(Component.text("└ ", NamedTextColor.DARK_GRAY))
+                .append(helpLink)
+                .append(Component.text(" or ", NamedTextColor.GRAY))
+                .append(Component.text("click arrows", NamedTextColor.YELLOW)
+                        .hoverEvent(Component.text("Click arrows to navigate", NamedTextColor.AQUA)))
+                .append(Component.text("\n", NamedTextColor.WHITE))
+                .build();
+
+        parts.add(navHint);
+
+        Component footer = Component.text()
+                .append(miniMessage.deserialize("<gradient:#ff6b6b:#5f27cd>v1.0.0</gradient>"))
+                .append(Component.text(" • ", NamedTextColor.DARK_GRAY))
+                .append(Component.text("LucazPlays", NamedTextColor.AQUA))
+                .build();
+
+        parts.add(footer);
+
+        return Component.join(Component.text("", NamedTextColor.WHITE), parts);
     }
 
     private void sendError(CommandSender sender, String message) {

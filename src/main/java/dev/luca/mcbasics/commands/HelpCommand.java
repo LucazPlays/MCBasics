@@ -53,11 +53,11 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
         int totalPages = (int) Math.ceil((double) COMMANDS.length / COMMANDS_PER_PAGE);
         page = Math.min(page, totalPages);
 
-        sender.sendMessage(createHelpMenu(page, totalPages));
+        sender.sendMessage(createHelpMenu(sender, page, totalPages));
         return true;
     }
 
-    private Component createHelpMenu(int page, int totalPages) {
+    private Component createHelpMenu(CommandSender sender, int page, int totalPages) {
         int startIndex = (page - 1) * COMMANDS_PER_PAGE;
         int endIndex = Math.min(startIndex + COMMANDS_PER_PAGE, COMMANDS.length);
 
@@ -68,7 +68,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
 
         for (int i = startIndex; i < endIndex; i++) {
             CommandInfo cmd = COMMANDS[i];
-            boolean hasPerm = senderHasPermission(cmd.permission);
+            boolean hasPerm = senderHasPermission(sender, cmd.permission);
 
             String icon = hasPerm ? "<green>➜</green>" : "<dark_gray>⊘</dark_gray>";
             String cmdColor = hasPerm ? "<yellow>" : "<dark_gray>";
@@ -105,8 +105,8 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(miniMessage.deserialize("<red>✖ " + message + "</red>"));
     }
 
-    private boolean senderHasPermission(String permission) {
-        return senderHasPermission(permission);
+    private boolean senderHasPermission(CommandSender sender, String permission) {
+        return sender.hasPermission(permission);
     }
 
     @Override

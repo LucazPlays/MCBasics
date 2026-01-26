@@ -38,6 +38,14 @@ public class Message {
         return MessageAPI.getMessage(key, fallback, placeholders);
     }
 
+    public static Component getComponent(String key, String fallback) {
+        return MessageAPI.getComponentMessage(key, fallback);
+    }
+
+    public static Component getComponent(String key, String fallback, String... placeholders) {
+        return MessageAPI.getComponentMessage(key, fallback, placeholders);
+    }
+
     public static void reload() {
         MessageAPI.reloadMessages();
     }

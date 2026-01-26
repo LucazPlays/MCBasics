@@ -14,7 +14,7 @@ public class GamemodeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.GM)) {
-            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
@@ -41,25 +41,25 @@ public class GamemodeCommand implements CommandExecutor {
                     if (args.length > 1 && sender.hasPermission(Permission.GM_OTHERS)) {
                         target = Bukkit.getPlayer(args[1]);
                         if (target == null) {
-                            sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                             return true;
                         }
                     }
                 } else if (sender.hasPermission(Permission.GM_OTHERS)) {
                     target = Bukkit.getPlayer(args[0]);
                     if (target == null) {
-                        sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                        sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                         return true;
                     }
                 } else {
-                    sender.sendMessage(Message.get("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
+                    sender.sendMessage(Message.getComponent("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
                     return true;
                 }
             }
         }
 
         if (mode == null) {
-            sender.sendMessage(Message.get("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
+            sender.sendMessage(Message.getComponent("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
             return true;
         }
 
@@ -67,7 +67,7 @@ public class GamemodeCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 target = (Player) sender;
             } else {
-                sender.sendMessage(Message.get("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
+                sender.sendMessage(Message.getComponent("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
                 return true;
             }
         }
@@ -75,9 +75,9 @@ public class GamemodeCommand implements CommandExecutor {
         target.setGameMode(mode);
         String modeName = mode.name().toLowerCase();
 
-        target.sendMessage(Message.get("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", modeName));
+        target.sendMessage(Message.getComponent("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", modeName));
         if (target != sender) {
-            sender.sendMessage(Message.get("gamemode.set_other", "<gradient:#48dbfb:#1dd1a1>✦ %target%'s gamemode set to %mode%!</gradient>", "target", target.getName(), "mode", modeName));
+            sender.sendMessage(Message.getComponent("gamemode.set_other", "<gradient:#48dbfb:#1dd1a1>✦ %target%'s gamemode set to %mode%!</gradient>", "target", target.getName(), "mode", modeName));
         }
 
         return true;

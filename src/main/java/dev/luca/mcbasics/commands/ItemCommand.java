@@ -19,17 +19,17 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.ITEM)) {
-            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.get("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Message.get("item.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /i <item> [amount]</gradient>"));
+            sender.sendMessage(Message.getComponent("item.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /i <item> [amount]</gradient>"));
             return true;
         }
 
@@ -40,19 +40,19 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
             try {
                 amount = Math.max(1, Math.min(64, Integer.parseInt(args[1])));
             } catch (NumberFormatException e) {
-                sender.sendMessage(Message.get("item.invalid_amount", "<gradient:#ff6b6b:#ee5a24>✖ Invalid amount!</gradient>"));
+                sender.sendMessage(Message.getComponent("item.invalid_amount", "<gradient:#ff6b6b:#ee5a24>✖ Invalid amount!</gradient>"));
                 return true;
             }
         }
 
         Material material = getMaterialByName(itemName);
         if (material == null) {
-            sender.sendMessage(Message.get("item.invalid_item", "<gradient:#ff6b6b:#ee5a24>✖ Invalid item!</gradient>"));
+            sender.sendMessage(Message.getComponent("item.invalid_item", "<gradient:#ff6b6b:#ee5a24>✖ Invalid item!</gradient>"));
             return true;
         }
 
         if (material == Material.AIR) {
-            sender.sendMessage(Message.get("item.invalid_item", "<gradient:#ff6b6b:#ee5a24>✖ Invalid item!</gradient>"));
+            sender.sendMessage(Message.getComponent("item.invalid_item", "<gradient:#ff6b6b:#ee5a24>✖ Invalid item!</gradient>"));
             return true;
         }
 
@@ -61,7 +61,7 @@ public class ItemCommand implements CommandExecutor, TabCompleter {
         player.getInventory().addItem(item);
 
         String displayName = formatItemName(material.name());
-        sender.sendMessage(Message.get("item.given", "<gradient:#48dbfb:#1dd1a1>✦ Given %amount%x %item% to your inventory!</gradient>", "amount", String.valueOf(amount), "item", displayName));
+        sender.sendMessage(Message.getComponent("item.given", "<gradient:#48dbfb:#1dd1a1>✦ Given %amount%x %item% to your inventory!</gradient>", "amount", String.valueOf(amount), "item", displayName));
 
         return true;
     }

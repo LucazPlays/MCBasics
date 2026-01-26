@@ -13,7 +13,7 @@ public class FeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.FEED)) {
-            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
+            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
@@ -22,22 +22,22 @@ public class FeedCommand implements CommandExecutor {
         if (args.length > 0 && sender.hasPermission(Permission.FEED_OTHERS)) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
+                sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
+            sender.sendMessage(Message.get("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
             return true;
         }
 
         target.setFoodLevel(20);
         target.setSaturation(20f);
-        target.sendMessage(Message.get("feed.fed", "You have been fed!"));
+        target.sendMessage(Message.get("feed.fed", "<gradient:#48dbfb:#1dd1a1>✦ You have been fed!</gradient>"));
 
         if (target != sender) {
-            sender.sendMessage(Message.get("feed.fed_other", "&a%target% has been fed!", "target", target.getName()));
+            sender.sendMessage(Message.get("feed.fed_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been fed!</gradient>", "target", target.getName()));
         }
 
         return true;

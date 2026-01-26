@@ -36,12 +36,12 @@ public class UnsafeEnchantCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.UNSAFEENCHANT)) {
-            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
+            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.get("unsafeenchant.usage", "&cUsage: /unsafeenchant <enchantment> <level> [player]"));
+            sender.sendMessage(Message.get("unsafeenchant.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /unsafeenchant <enchantment> <level> [player]</gradient>"));
             return true;
         }
 
@@ -51,17 +51,17 @@ public class UnsafeEnchantCommand implements CommandExecutor {
         try {
             level = Integer.parseInt(args[1]);
             if (level < 0) {
-                sender.sendMessage(Message.get("unsafeenchant.level_negative", "&cLevel cannot be negative!"));
+                sender.sendMessage(Message.get("unsafeenchant.level_negative", "<gradient:#ff6b6b:#ee5a24>✖ Level cannot be negative!</gradient>"));
                 return true;
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(Message.get("unsafeenchant.invalid_level", "&cInvalid level!"));
+            sender.sendMessage(Message.get("unsafeenchant.invalid_level", "<gradient:#ff6b6b:#ee5a24>✖ Invalid level!</gradient>"));
             return true;
         }
 
         Enchantment enchantment = getEnchantmentByName(enchantmentName);
         if (enchantment == null) {
-            sender.sendMessage(Message.get("unsafeenchant.invalid_enchantment", "&cInvalid enchantment!"));
+            sender.sendMessage(Message.get("unsafeenchant.invalid_enchantment", "<gradient:#ff6b6b:#ee5a24>✖ Invalid enchantment!</gradient>"));
             return true;
         }
 
@@ -69,32 +69,32 @@ public class UnsafeEnchantCommand implements CommandExecutor {
         if (args.length > 2) {
             target = Bukkit.getPlayer(args[2]);
             if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
+                sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
+            sender.sendMessage(Message.get("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
             return true;
         }
 
         ItemStack item = target.getInventory().getItemInMainHand();
         if (item == null || item.getType() == org.bukkit.Material.AIR) {
-            sender.sendMessage(Message.get("unsafeenchant.no_item", "&cYou must hold an item!"));
+            sender.sendMessage(Message.get("unsafeenchant.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
             return true;
         }
 
         boolean success = addUnsafeEnchantment(item, enchantment, level);
 
         if (!success) {
-            sender.sendMessage(Message.get("unsafeenchant.failed", "&cFailed to add enchantment!"));
+            sender.sendMessage(Message.get("unsafeenchant.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to add enchantment!</gradient>"));
             return true;
         }
 
-        sender.sendMessage(Message.get("unsafeenchant.enchanted", "Added %enchant% %level% to the item!", "enchant", enchantmentName, "level", String.valueOf(level)));
+        sender.sendMessage(Message.get("unsafeenchant.enchanted", "<gradient:#48dbfb:#1dd1a1>✦ Added %enchant% %level% to the item!</gradient>", "enchant", enchantmentName, "level", String.valueOf(level)));
         if (target != sender) {
-            target.sendMessage(Message.get("unsafeenchant.enchanted_other", "Your item has been enchanted!"));
+            target.sendMessage(Message.get("unsafeenchant.enchanted_other", "<gradient:#48dbfb:#1dd1a1>✦ Your item has been enchanted!</gradient>"));
         }
 
         return true;

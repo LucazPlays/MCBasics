@@ -14,23 +14,23 @@ public class InvseeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.INVSEE)) {
-            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
+            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Message.get("invsee.usage", "&cUsage: /invsee <player>"));
+            sender.sendMessage(Message.get("invsee.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /invsee <player></gradient>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
+            sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
 
         if (target.equals(sender)) {
-            sender.sendMessage(Message.get("invsee.cant_view_self", "&cYou can't invsee yourself!"));
+            sender.sendMessage(Message.get("invsee.cant_view_self", "<gradient:#ff6b6b:#ee5a24>✖ You can't invsee yourself!</gradient>"));
             return true;
         }
 
@@ -48,7 +48,7 @@ public class InvseeCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             player.openInventory(viewerInventory);
-            player.sendMessage(Message.get("invsee.viewing", "Viewing %target%'s inventory!", "target", target.getName()));
+            player.sendMessage(Message.get("invsee.viewing", "<gradient:#48dbfb:#1dd1a1>✦ Viewing %target%'s inventory!</gradient>", "target", target.getName()));
         }
 
         return true;

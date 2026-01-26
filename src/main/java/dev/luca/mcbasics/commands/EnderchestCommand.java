@@ -17,12 +17,12 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.ENDERCHEST)) {
-            sender.sendMessage(Message.get("general.no_permission", "&cYou don't have permission!"));
+            sender.sendMessage(Message.get("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.mustBePlayer());
+            sender.sendMessage(Message.get("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
@@ -30,7 +30,7 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
         if (args.length > 0 && sender.hasPermission(Permission.ENDERCHEST_OTHERS)) {
             target = Bukkit.getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
+                sender.sendMessage(Message.get("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
         } else {
@@ -39,7 +39,7 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
         player.openInventory(target.getEnderChest());
-        player.sendMessage(Message.get("enderchest.opened", "Opening %target%'s enderchest!", "target", target.getName()));
+        player.sendMessage(Message.get("enderchest.opened", "<gradient:#48dbfb:#1dd1a1>✦ Opening %target%'s enderchest!</gradient>", "target", target.getName()));
 
         return true;
     }

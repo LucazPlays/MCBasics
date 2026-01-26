@@ -44,6 +44,11 @@ commands:
   i:
     description: Give yourself an item
     usage: /i <item> [amount]
+  enderchest:
+    description: Open your or another player's enderchest
+    usage: /enderchest [player]
+    aliases:
+      - ec
 
 permissions:
   mcbasics.*:
@@ -63,6 +68,8 @@ permissions:
       mcbasics.fly: true
       mcbasics.fly.others: true
       mcbasics.unsafeenchant: true
+      mcbasics.enderchest: true
+      mcbasics.enderchest.others: true
       mcbasics.help: true
       mcbasics.item: true
 
@@ -110,6 +117,12 @@ permissions:
     default: op
   mcbasics.unsafeenchant:
     description: Allows use of /unsafeenchant
+    default: op
+  mcbasics.enderchest:
+    description: Allows use of /enderchest
+    default: true
+  mcbasics.enderchest.others:
+    description: Allows opening other players' enderchests
     default: op
   mcbasics.help:
     description: Allows use of /help

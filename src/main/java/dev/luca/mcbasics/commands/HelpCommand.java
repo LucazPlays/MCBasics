@@ -28,7 +28,8 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("vanish [p]", "Toggle vanish", Permission.VANISH),
             new CommandInfo("invsee <p>", "View inventory", Permission.INVSEE),
             new CommandInfo("tphere <p]", "Teleport to you", Permission.TPHERE),
-            new CommandInfo("unsafeenchant <ench> <lvl>", "Add enchant", Permission.UNSAFEENCHANT)
+            new CommandInfo("unsafeenchant <ench> <lvl>", "Add enchant", Permission.UNSAFEENCHANT),
+            new CommandInfo("enderchest [p]", "Open enderchest", Permission.ENDERCHEST)
     };
 
     private static final int COMMANDS_PER_PAGE = 5;

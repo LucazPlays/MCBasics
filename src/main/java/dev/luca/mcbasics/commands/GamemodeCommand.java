@@ -18,90 +18,91 @@ public class GamemodeCommand implements CommandExecutor {
             return true;
         }
 
-        Player target;
-        GameMode mode;
+        Player target = null;
+        GameMode mode = null;
 
-        if (label.equalsIgnoreCase("gmc")) {
+        String labelLower = label.toLowerCase();
+
+        if (labelLower.equals("gmc")) {
             mode = GameMode.CREATIVE;
-        } else if (label.equalsIgnoreCase("gms")) {
+        } else if (labelLower.equals("gms") || labelLower.equals("survival")) {
             mode = GameMode.SURVIVAL;
-        } else if (label.equalsIgnoreCase("gma")) {
+        } else if (labelLower.equals("gma") || labelLower.equals("adventure")) {
             mode = GameMode.ADVENTURE;
-        } else if (label.equalsIgnoreCase("gmsp")) {
+        } else if (labelLower.equals("gmsp") || labelLower.equals("spectator")) {
             mode = GameMode.SPECTATOR;
-        } else {
-            if (args.length == 0) {
-                if (!(sender instanceof Player)) {
-                    sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
-                    return true;
-                }
-                target = (Player) sender;
-            } else {
-                target = Bukkit.getPlayer(args[0]);
-                if (target == null) {
-                    sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
-                    return true;
-                }
-            }
+        } else if (labelLower.equals("gamemode") || labelLower.equals("gm")) {
+            if (args.length > 0) {
+                String firstArg = args[0].toLowerCase();
 
-            try {
-                int modeNum = Integer.parseInt(args[0]);
-                switch (modeNum) {
-                    case 0:
-                        mode = GameMode.SURVIVAL;
-                        break;
-                    case 1:
-                        mode = GameMode.CREATIVE;
-                        break;
-                    case 2:
-                        mode = GameMode.ADVENTURE;
-                        break;
-                    case 3:
-                        mode = GameMode.SPECTATOR;
-                        break;
-                    default:
-                        sender.sendMessage(Message.get("gamemode.invalid_mode", "&cInvalid gamemode! Use 0, 1, 2, or 3"));
+                GameMode parsedMode = parseGamemode(firstArg);
+                if (parsedMode != null) {
+                    mode = parsedMode;
+                    if (args.length > 1 && sender.hasPermission(Permission.GM_OTHERS)) {
+                        target = Bukkit.getPlayer(args[1]);
+                        if (target == null) {
+                            sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
+                            return true;
+                        }
+                    }
+                } else if (sender.hasPermission(Permission.GM_OTHERS)) {
+                    target = Bukkit.getPlayer(args[0]);
+                    if (target == null) {
+                        sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
                         return true;
+                    }
+                } else {
+                    sender.sendMessage(Message.get("gamemode.invalid_mode", "&cInvalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator"));
+                    return true;
                 }
-            } catch (NumberFormatException e) {
-                sender.sendMessage(Message.get("gamemode.use_numbers", "&cPlease use numbers (0, 1, 2, 3) for gamemode"));
-                return true;
             }
         }
 
-        if (args.length > 1 && sender.hasPermission(Permission.GM_OTHERS)) {
-            target = Bukkit.getPlayer(args[1]);
-            if (target == null) {
-                sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
-                return true;
-            }
-        } else if (!(sender instanceof Player) && label.equalsIgnoreCase("gm")) {
-            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
-            return true;
-        } else if (label.equalsIgnoreCase("gm")) {
-            target = (Player) sender;
-        } else if (sender instanceof Player) {
-            target = (Player) sender;
-        } else {
-            sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
+        if (mode == null) {
+            sender.sendMessage(Message.get("gamemode.invalid_mode", "&cInvalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator"));
             return true;
         }
 
         if (target == null) {
-            sender.sendMessage(Message.get("general.player_not_found", "&cPlayer not found!"));
-            return true;
+            if (sender instanceof Player) {
+                target = (Player) sender;
+            } else {
+                sender.sendMessage(Message.get("general.specify_player", "&cSpecify a player!"));
+                return true;
+            }
         }
 
         target.setGameMode(mode);
         String modeName = mode.name().toLowerCase();
-        String modeKey = "gamemode.mode_names." + modeName;
-        String localizedMode = Message.get(modeKey, modeName, "mode", modeName);
 
-        target.sendMessage(Message.get("gamemode.set_to", "Your gamemode has been set to %mode%!", "mode", localizedMode));
+        target.sendMessage(Message.get("gamemode.set_to", "Your gamemode has been set to %mode%!", "mode", modeName));
         if (target != sender) {
-            sender.sendMessage(Message.get("gamemode.set_other", "&a%target%'s gamemode set to %mode%!", "target", target.getName(), "mode", localizedMode));
+            sender.sendMessage(Message.get("gamemode.set_other", "&a%target%'s gamemode set to %mode%!", "target", target.getName(), "mode", modeName));
         }
 
         return true;
+    }
+
+    private GameMode parseGamemode(String input) {
+        switch (input) {
+            case "0":
+            case "survival":
+            case "s":
+                return GameMode.SURVIVAL;
+            case "1":
+            case "creative":
+            case "c":
+                return GameMode.CREATIVE;
+            case "2":
+            case "adventure":
+            case "a":
+                return GameMode.ADVENTURE;
+            case "3":
+            case "spectator":
+            case "sp":
+                return GameMode.SPECTATOR;
+            default:
+                return null;
+        }
     }
 }

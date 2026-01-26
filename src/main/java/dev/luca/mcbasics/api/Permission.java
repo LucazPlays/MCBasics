@@ -29,6 +29,7 @@ public final class Permission {
     public static final String FLY_OTHERS = "mcbasics.fly.others";
     public static final String UNSAFEENCHANT = "mcbasics.unsafeenchant";
     public static final String HELP = "mcbasics.help";
+    public static final String ITEM = "mcbasics.item";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

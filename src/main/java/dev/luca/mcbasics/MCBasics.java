@@ -70,6 +70,7 @@ public final class MCBasics extends JavaPlugin {
 
     private void registerCommands() {
         MainTabCompleter tabCompleter = new MainTabCompleter();
+        GamemodeCommand gamemodeCmd = new GamemodeCommand();
 
         getCommand("help").setExecutor(new HelpCommand());
         getCommand("help").setTabCompleter(new HelpCommand());
@@ -77,16 +78,8 @@ public final class MCBasics extends JavaPlugin {
         getCommand("vanish").setExecutor(new VanishCommand());
         getCommand("vanish").setTabCompleter(tabCompleter);
 
-        getCommand("gm").setExecutor(new GamemodeCommand());
-        getCommand("gm").setTabCompleter(tabCompleter);
-        getCommand("gmc").setExecutor(new GamemodeCommand());
-        getCommand("gmc").setTabCompleter(tabCompleter);
-        getCommand("gms").setExecutor(new GamemodeCommand());
-        getCommand("gms").setTabCompleter(tabCompleter);
-        getCommand("gma").setExecutor(new GamemodeCommand());
-        getCommand("gma").setTabCompleter(tabCompleter);
-        getCommand("gmsp").setExecutor(new GamemodeCommand());
-        getCommand("gmsp").setTabCompleter(tabCompleter);
+        getCommand("gamemode").setExecutor(gamemodeCmd);
+        getCommand("gamemode").setTabCompleter(tabCompleter);
 
         getCommand("invsee").setExecutor(new InvseeCommand());
         getCommand("invsee").setTabCompleter(tabCompleter);
@@ -108,6 +101,9 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("unsafeenchant").setExecutor(new UnsafeEnchantCommand());
         getCommand("unsafeenchant").setTabCompleter(tabCompleter);
+
+        getCommand("i").setExecutor(new ItemCommand());
+        getCommand("i").setTabCompleter(new ItemCommand());
     }
 
     public static MCBasics getInstance() {

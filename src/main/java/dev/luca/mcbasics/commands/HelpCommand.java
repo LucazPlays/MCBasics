@@ -18,16 +18,13 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     private static final CommandInfo[] COMMANDS = {
-            new CommandInfo("help", "Show help menu", Permission.HELP),
+            new CommandInfo("help [page]", "Show help menu", Permission.HELP),
+            new CommandInfo("i <item> [amount]", "Give yourself items", Permission.ITEM),
             new CommandInfo("feed [player]", "Restore hunger", Permission.FEED),
             new CommandInfo("heal [player]", "Restore health", Permission.HEAL),
             new CommandInfo("fly [player]", "Toggle flight", Permission.FLY),
-            new CommandInfo("speed <1-10> [player]", "Set walk speed", Permission.SPEED),
-            new CommandInfo("gm 0/1/2/3 [p]", "Change gamemode", Permission.GM),
-            new CommandInfo("gmc [p]", "Creative mode", Permission.GMC),
-            new CommandInfo("gms [p]", "Survival mode", Permission.GMS),
-            new CommandInfo("gma [p]", "Adventure mode", Permission.GMA),
-            new CommandInfo("gmsp [p]", "Spectator mode", Permission.GMSP),
+            new CommandInfo("speed <1-10> [p]", "Set walk speed", Permission.SPEED),
+            new CommandInfo("gamemode <0-3> [p]", "Change gamemode", Permission.GM),
             new CommandInfo("vanish [p]", "Toggle vanish", Permission.VANISH),
             new CommandInfo("invsee <p>", "View inventory", Permission.INVSEE),
             new CommandInfo("tphere <p]", "Teleport to you", Permission.TPHERE),

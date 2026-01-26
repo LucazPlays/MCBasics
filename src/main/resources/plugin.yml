@@ -11,21 +11,15 @@ commands:
   vanish:
     description: Toggle vanish mode
     usage: /vanish [player]
-  gm:
-    description: Change gamemode
-    usage: /gm <0/1/2/3> [player]
-  gmc:
-    description: Change to creative mode
-    usage: /gmc [player]
-  gms:
-    description: Change to survival mode
-    usage: /gms [player]
-  gma:
-    description: Change to adventure mode
-    usage: /gma [player]
-  gmsp:
-    description: Change to spectator mode
-    usage: /gmsp [player]
+  gamemode:
+    description: Change gamemode (0=survival, 1=creative, 2=adventure, 3=spectator)
+    usage: /gamemode <0/1/2/3/normal/creative/adventure/spectator> [player]
+    aliases:
+      - gm
+      - gmc
+      - gms
+      - gma
+      - gmsp
   invsee:
     description: View another player's inventory
     usage: /invsee <player>
@@ -47,6 +41,9 @@ commands:
   unsafeenchant:
     description: Add any enchantment at any level
     usage: /unsafeenchant <enchantment> <level> [player]
+  i:
+    description: Give yourself an item
+    usage: /i <item> [amount]
 
 permissions:
   mcbasics.*:
@@ -55,7 +52,6 @@ permissions:
       mcbasics.vanish: true
       mcbasics.vanish.see: true
       mcbasics.gm: true
-      mcbasics.gm.others: true
       mcbasics.invsee: true
       mcbasics.tphere: true
       mcbasics.feed: true
@@ -68,6 +64,7 @@ permissions:
       mcbasics.fly.others: true
       mcbasics.unsafeenchant: true
       mcbasics.help: true
+      mcbasics.item: true
 
   mcbasics.vanish:
     description: Allows use of /vanish
@@ -116,4 +113,7 @@ permissions:
     default: op
   mcbasics.help:
     description: Allows use of /help
+    default: true
+  mcbasics.item:
+    description: Allows use of /i
     default: true

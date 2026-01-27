@@ -55,6 +55,9 @@ commands:
   setlore:
     description: Set a specific line of the item's lore
     usage: /setlore <linenumber> <text>
+  sudo:
+    description: Force a player to execute a command
+    usage: /sudo <player> <command [args]>
 
 permissions:
   mcbasics.*:
@@ -78,6 +81,7 @@ permissions:
       mcbasics.enderchest.others: true
       mcbasics.setdisplayname: true
       mcbasics.setlore: true
+      mcbasics.sudo: true
       mcbasics.help: true
       mcbasics.item: true
 
@@ -138,6 +142,9 @@ permissions:
   mcbasics.setlore:
     description: Allows use of /setlore
     default: true
+  mcbasics.sudo:
+    description: Allows use of /sudo
+    default: op
   mcbasics.help:
     description: Allows use of /help
     default: true

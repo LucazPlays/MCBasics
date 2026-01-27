@@ -115,6 +115,9 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("setlore").setExecutor(new SetLoreCommand());
         getCommand("setlore").setTabCompleter(tabCompleter);
+
+        getCommand("sudo").setExecutor(new SudoCommand());
+        getCommand("sudo").setTabCompleter(tabCompleter);
     }
 
     public static MCBasics getInstance() {

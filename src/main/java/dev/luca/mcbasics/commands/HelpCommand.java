@@ -32,7 +32,8 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("enderchest [p]", "Open enderchest", Permission.ENDERCHEST),
             new CommandInfo("setdisplayname <name>", "Set item name", Permission.SETDISPLAYNAME),
             new CommandInfo("setlore <line> <text>", "Set lore line", Permission.SETLORE),
-            new CommandInfo("sudo <p> <cmd>", "Force cmd exec", Permission.SUDO)
+            new CommandInfo("sudo <p> <cmd>", "Force cmd exec", Permission.SUDO),
+            new CommandInfo("ping [p]", "Show ping", Permission.PING)
     };
 
     private static final int COMMANDS_PER_PAGE = 5;

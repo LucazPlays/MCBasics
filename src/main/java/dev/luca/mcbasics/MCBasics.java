@@ -118,6 +118,9 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("sudo").setExecutor(new SudoCommand());
         getCommand("sudo").setTabCompleter(tabCompleter);
+
+        getCommand("ping").setExecutor(new PingCommand());
+        getCommand("ping").setTabCompleter(tabCompleter);
     }
 
     public static MCBasics getInstance() {

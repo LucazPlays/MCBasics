@@ -33,6 +33,8 @@ public final class Permission {
     public static final String SETDISPLAYNAME = "mcbasics.setdisplayname";
     public static final String SETLORE = "mcbasics.setlore";
     public static final String SUDO = "mcbasics.sudo";
+    public static final String PING = "mcbasics.ping";
+    public static final String PING_OTHERS = "mcbasics.ping.others";
     public static final String HELP = "mcbasics.help";
     public static final String ITEM = "mcbasics.item";
 

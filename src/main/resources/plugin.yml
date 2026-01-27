@@ -58,6 +58,9 @@ commands:
   sudo:
     description: Force a player to execute a command
     usage: /sudo <player> <command [args]>
+  ping:
+    description: Show a player's ping
+    usage: /ping [player]
 
 permissions:
   mcbasics.*:
@@ -82,6 +85,7 @@ permissions:
       mcbasics.setdisplayname: true
       mcbasics.setlore: true
       mcbasics.sudo: true
+      mcbasics.ping: true
       mcbasics.help: true
       mcbasics.item: true
 
@@ -144,6 +148,12 @@ permissions:
     default: true
   mcbasics.sudo:
     description: Allows use of /sudo
+    default: op
+  mcbasics.ping:
+    description: Allows use of /ping
+    default: true
+  mcbasics.ping.others:
+    description: Allows checking other players' ping
     default: op
   mcbasics.help:
     description: Allows use of /help

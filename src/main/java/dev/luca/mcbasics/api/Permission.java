@@ -30,6 +30,8 @@ public final class Permission {
     public static final String UNSAFEENCHANT = "mcbasics.unsafeenchant";
     public static final String ENDERCHEST = "mcbasics.enderchest";
     public static final String ENDERCHEST_OTHERS = "mcbasics.enderchest.others";
+    public static final String SETDISPLAYNAME = "mcbasics.setdisplayname";
+    public static final String SETLORE = "mcbasics.setlore";
     public static final String HELP = "mcbasics.help";
     public static final String ITEM = "mcbasics.item";
 

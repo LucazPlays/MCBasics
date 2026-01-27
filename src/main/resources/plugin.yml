@@ -49,6 +49,12 @@ commands:
     usage: /enderchest [player]
     aliases:
       - ec
+  setdisplayname:
+    description: Set the display name of the item in hand
+    usage: /setdisplayname <name>
+  setlore:
+    description: Set a specific line of the item's lore
+    usage: /setlore <linenumber> <text>
 
 permissions:
   mcbasics.*:
@@ -70,6 +76,8 @@ permissions:
       mcbasics.unsafeenchant: true
       mcbasics.enderchest: true
       mcbasics.enderchest.others: true
+      mcbasics.setdisplayname: true
+      mcbasics.setlore: true
       mcbasics.help: true
       mcbasics.item: true
 
@@ -124,6 +132,12 @@ permissions:
   mcbasics.enderchest.others:
     description: Allows opening other players' enderchests
     default: op
+  mcbasics.setdisplayname:
+    description: Allows use of /setdisplayname
+    default: true
+  mcbasics.setlore:
+    description: Allows use of /setlore
+    default: true
   mcbasics.help:
     description: Allows use of /help
     default: true

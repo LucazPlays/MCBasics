@@ -109,6 +109,12 @@ public final class MCBasics extends JavaPlugin {
         getCommand("enderchest").setTabCompleter(new EnderchestCommand());
         getCommand("ec").setExecutor(new EnderchestCommand());
         getCommand("ec").setTabCompleter(new EnderchestCommand());
+
+        getCommand("setdisplayname").setExecutor(new SetDisplayNameCommand());
+        getCommand("setdisplayname").setTabCompleter(tabCompleter);
+
+        getCommand("setlore").setExecutor(new SetLoreCommand());
+        getCommand("setlore").setTabCompleter(tabCompleter);
     }
 
     public static MCBasics getInstance() {

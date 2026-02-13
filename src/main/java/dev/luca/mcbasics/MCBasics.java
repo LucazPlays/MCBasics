@@ -121,6 +121,8 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("ping").setExecutor(new PingCommand());
         getCommand("ping").setTabCompleter(tabCompleter);
+
+        getCommand("god").setExecutor(new GodCommand());
     }
 
     public static MCBasics getInstance() {

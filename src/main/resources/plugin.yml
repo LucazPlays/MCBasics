@@ -61,6 +61,9 @@ commands:
   ping:
     description: Show a player's ping
     usage: /ping [player]
+  god:
+    description: Toggle god mode (no damage)
+    usage: /god [player]
 
 permissions:
   mcbasics.*:
@@ -85,6 +88,7 @@ permissions:
       mcbasics.setdisplayname: true
       mcbasics.setlore: true
       mcbasics.sudo: true
+      mcbasics.god: true
       mcbasics.ping: true
       mcbasics.help: true
       mcbasics.item: true
@@ -154,6 +158,12 @@ permissions:
     default: true
   mcbasics.ping.others:
     description: Allows checking other players' ping
+    default: op
+  mcbasics.god:
+    description: Allows use of /god
+    default: true
+  mcbasics.god.others:
+    description: Allows toggling god mode for other players
     default: op
   mcbasics.help:
     description: Allows use of /help

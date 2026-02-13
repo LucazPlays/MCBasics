@@ -127,15 +127,12 @@ public class InventoryCommand implements CommandExecutor, Listener {
         
         if (viewInv == null) return;
 
-        ItemStack[] currentContents = target.getInventory().getContents();
         ItemStack[] newContents = new ItemStack[36];
 
         for (int i = 0; i < 36; i++) {
             ItemStack item = viewInv.getItem(i);
             if (item != null && item.getType() != Material.AIR) {
                 newContents[i] = item;
-            } else if (i < currentContents.length && currentContents[i] != null) {
-                newContents[i] = currentContents[i];
             }
         }
 

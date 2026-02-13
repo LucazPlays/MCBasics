@@ -25,7 +25,6 @@ import java.util.UUID;
 public class InventoryCommand implements CommandExecutor, Listener {
 
     private static final Map<UUID, Player> viewingPlayers = new HashMap<>();
-    private static final Map<UUID, Boolean> syncPending = new HashMap<>();
 
     public InventoryCommand() {
         MCBasics.getInstance().getServer().getPluginManager().registerEvents(this, MCBasics.getInstance());
@@ -69,7 +68,6 @@ public class InventoryCommand implements CommandExecutor, Listener {
     public void openInventory(Player viewer, Player target) {
         Inventory mainInv = createMainInventory(target);
         viewingPlayers.put(viewer.getUniqueId(), target);
-        syncPending.put(viewer.getUniqueId(), false);
         viewer.openInventory(mainInv);
         viewer.sendMessage(Message.getComponent("inventory.editing", "<gradient:#48dbfb:#1dd1a1>✦ Editing %target%'s inventory!</gradient>", "target", target.getName()));
     }
@@ -107,16 +105,9 @@ public class InventoryCommand implements CommandExecutor, Listener {
 
         if (event.getAction() == InventoryAction.NOTHING) return;
 
-        event.setCancelled(true);
-
-        syncPending.put(viewer.getUniqueId(), true);
-
         Bukkit.getScheduler().runTaskLater(MCBasics.getInstance(), () -> {
-            if (Boolean.TRUE.equals(syncPending.get(viewer.getUniqueId()))) {
-                syncToPlayer(viewer, target);
-                syncPending.put(viewer.getUniqueId(), false);
-            }
-        }, 2L);
+            syncToPlayer(viewer, target);
+        }, 1L);
     }
 
     @EventHandler
@@ -128,7 +119,6 @@ public class InventoryCommand implements CommandExecutor, Listener {
         
         if (target == null) return;
 
-        syncPending.remove(viewer.getUniqueId());
         syncToPlayer(viewer, target);
     }
 

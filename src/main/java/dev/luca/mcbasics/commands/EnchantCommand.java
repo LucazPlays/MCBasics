@@ -5,6 +5,7 @@ import dev.luca.mcbasics.api.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantCommand implements CommandExecutor {
+public class EnchantCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -119,5 +120,43 @@ public class EnchantCommand implements CommandExecutor {
             names.add(enchantment.getKey().getKey());
         }
         return names;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            String partial = args[0].toLowerCase();
+            for (Enchantment enchantment : Enchantment.values()) {
+                String name = enchantment.getKey().getKey().toLowerCase();
+                if (name.startsWith(partial)) {
+                    completions.add(enchantment.getKey().getKey().toLowerCase());
+                }
+            }
+        } else if (args.length == 2) {
+            String partial = args[1];
+            try {
+                int currentLevel = Integer.parseInt(partial);
+                int maxLevel = 5;
+                if (args.length > 0) {
+                    Enchantment enchant = getEnchantmentByName(args[0].toUpperCase());
+                    if (enchant != null) {
+                        maxLevel = enchant.getMaxLevel();
+                    }
+                }
+                for (int i = 1; i <= maxLevel; i++) {
+                    if (partial.isEmpty() || String.valueOf(i).startsWith(partial)) {
+                        completions.add(String.valueOf(i));
+                    }
+                }
+            } catch (NumberFormatException e) {
+                for (int i = 1; i <= 5; i++) {
+                    completions.add(String.valueOf(i));
+                }
+            }
+        }
+
+        return completions;
     }
 }

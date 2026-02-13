@@ -38,6 +38,8 @@ public final class Permission {
     public static final String GOD_OTHERS = "mcbasics.god.others";
     public static final String PING = "mcbasics.ping";
     public static final String PING_OTHERS = "mcbasics.ping.others";
+    public static final String CRAFT = "mcbasics.craft";
+    public static final String ANVIL = "mcbasics.anvil";
     public static final String HELP = "mcbasics.help";
     public static final String ITEM = "mcbasics.item";
 

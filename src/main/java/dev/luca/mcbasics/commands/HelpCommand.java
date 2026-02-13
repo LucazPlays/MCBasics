@@ -35,7 +35,9 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("setlore <line> <text>", "Set lore line", Permission.SETLORE),
             new CommandInfo("sudo <p> <cmd>", "Force cmd exec", Permission.SUDO),
             new CommandInfo("ping [p]", "Show ping", Permission.PING),
-            new CommandInfo("god [p]", "Toggle god mode", Permission.GOD)
+            new CommandInfo("god [p]", "Toggle god mode", Permission.GOD),
+            new CommandInfo("craft", "Open crafting", Permission.CRAFT),
+            new CommandInfo("anvil", "Open anvil", Permission.ANVIL)
     };
 
     private static final int COMMANDS_PER_PAGE = 5;

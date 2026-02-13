@@ -103,7 +103,7 @@ public final class MCBasics extends JavaPlugin {
         getCommand("unsafeenchant").setTabCompleter(tabCompleter);
 
         getCommand("enchant").setExecutor(new EnchantCommand());
-        getCommand("enchant").setTabCompleter(tabCompleter);
+        getCommand("enchant").setTabCompleter(new EnchantCommand());
 
         getCommand("i").setExecutor(new ItemCommand());
         getCommand("i").setTabCompleter(new ItemCommand());
@@ -126,6 +126,9 @@ public final class MCBasics extends JavaPlugin {
         getCommand("ping").setTabCompleter(tabCompleter);
 
         getCommand("god").setExecutor(new GodCommand());
+
+        getCommand("craft").setExecutor(new CraftCommand());
+        getCommand("anvil").setExecutor(new AnvilCommand());
     }
 
     public static MCBasics getInstance() {

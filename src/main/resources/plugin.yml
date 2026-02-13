@@ -67,6 +67,12 @@ commands:
   god:
     description: Toggle god mode (no damage)
     usage: /god [player]
+  craft:
+    description: Open a crafting table
+    usage: /craft
+  anvil:
+    description: Open an anvil
+    usage: /anvil
 
 permissions:
   mcbasics.*:
@@ -94,6 +100,8 @@ permissions:
       mcbasics.sudo: true
       mcbasics.god: true
       mcbasics.ping: true
+      mcbasics.craft: true
+      mcbasics.anvil: true
       mcbasics.help: true
       mcbasics.item: true
 
@@ -172,6 +180,12 @@ permissions:
   mcbasics.god.others:
     description: Allows toggling god mode for other players
     default: op
+  mcbasics.craft:
+    description: Allows use of /craft
+    default: true
+  mcbasics.anvil:
+    description: Allows use of /anvil
+    default: true
   mcbasics.help:
     description: Allows use of /help
     default: true

@@ -102,6 +102,9 @@ public final class MCBasics extends JavaPlugin {
         getCommand("unsafeenchant").setExecutor(new UnsafeEnchantCommand());
         getCommand("unsafeenchant").setTabCompleter(tabCompleter);
 
+        getCommand("enchant").setExecutor(new EnchantCommand());
+        getCommand("enchant").setTabCompleter(tabCompleter);
+
         getCommand("i").setExecutor(new ItemCommand());
         getCommand("i").setTabCompleter(new ItemCommand());
 

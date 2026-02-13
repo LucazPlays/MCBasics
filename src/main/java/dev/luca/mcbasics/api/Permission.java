@@ -28,6 +28,7 @@ public final class Permission {
     public static final String FLY = "mcbasics.fly";
     public static final String FLY_OTHERS = "mcbasics.fly.others";
     public static final String UNSAFEENCHANT = "mcbasics.unsafeenchant";
+    public static final String ENCHANT = "mcbasics.enchant";
     public static final String ENDERCHEST = "mcbasics.enderchest";
     public static final String ENDERCHEST_OTHERS = "mcbasics.enderchest.others";
     public static final String SETDISPLAYNAME = "mcbasics.setdisplayname";

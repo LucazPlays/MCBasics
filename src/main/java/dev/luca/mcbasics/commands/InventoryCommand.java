@@ -16,6 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class InventoryCommand implements CommandExecutor, Listener {
 
     private static final Map<UUID, Player> viewingPlayers = new HashMap<>();
+    private static final Map<UUID, BukkitTask> syncTasks = new HashMap<>();
 
     public InventoryCommand() {
         MCBasics.getInstance().getServer().getPluginManager().registerEvents(this, MCBasics.getInstance());
@@ -65,10 +67,19 @@ public class InventoryCommand implements CommandExecutor, Listener {
     }
 
     public void openInventory(Player viewer, Player target) {
+        if (syncTasks.containsKey(viewer.getUniqueId())) {
+            syncTasks.get(viewer.getUniqueId()).cancel();
+        }
+
         Inventory mainInv = createMainInventory(target);
         viewingPlayers.put(viewer.getUniqueId(), target);
         viewer.openInventory(mainInv);
         viewer.sendMessage(Message.getComponent("inventory.editing", "<gradient:#48dbfb:#1dd1a1>✦ Editing %target%'s inventory!</gradient>", "target", target.getName()));
+
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(MCBasics.getInstance(), () -> {
+            syncFromTarget(viewer, target);
+        }, 2L, 2L);
+        syncTasks.put(viewer.getUniqueId(), task);
     }
 
     private Inventory createMainInventory(Player target) {
@@ -86,6 +97,33 @@ public class InventoryCommand implements CommandExecutor, Listener {
         inv.setItem(40, target.getInventory().getItemInOffHand());
 
         return inv;
+    }
+
+    private void syncFromTarget(Player viewer, Player target) {
+        if (!viewer.isOnline() || !target.isOnline()) return;
+        
+        Inventory viewInv = viewer.getOpenInventory().getTopInventory();
+        if (viewInv == null) return;
+
+        ItemStack[] targetContents = target.getInventory().getContents();
+        for (int i = 0; i < 36; i++) {
+            ItemStack targetItem = i < targetContents.length ? targetContents[i] : null;
+            ItemStack viewItem = viewInv.getItem(i);
+            
+            if (targetItem == null || targetItem.getType() == Material.AIR) {
+                if (viewItem != null && viewItem.getType() != Material.AIR) {
+                    viewInv.setItem(i, new ItemStack(Material.AIR));
+                }
+            } else if (viewItem == null || viewItem.getType() == Material.AIR || !viewItem.isSimilar(targetItem)) {
+                viewInv.setItem(i, targetItem);
+            }
+        }
+
+        viewInv.setItem(36, target.getInventory().getHelmet());
+        viewInv.setItem(37, target.getInventory().getChestplate());
+        viewInv.setItem(38, target.getInventory().getLeggings());
+        viewInv.setItem(39, target.getInventory().getBoots());
+        viewInv.setItem(40, target.getInventory().getItemInOffHand());
     }
 
     @EventHandler
@@ -109,6 +147,11 @@ public class InventoryCommand implements CommandExecutor, Listener {
         
         Player viewer = (Player) event.getPlayer();
         Player target = viewingPlayers.remove(viewer.getUniqueId());
+        
+        BukkitTask task = syncTasks.remove(viewer.getUniqueId());
+        if (task != null) {
+            task.cancel();
+        }
         
         if (target == null) return;
 

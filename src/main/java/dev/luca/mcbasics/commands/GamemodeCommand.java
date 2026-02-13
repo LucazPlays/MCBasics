@@ -7,9 +7,13 @@ import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class GamemodeCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -63,6 +67,18 @@ public class GamemodeCommand implements CommandExecutor {
             return true;
         }
 
+        if (target == null && (args.length > 0 || (labelLower.equals("gmc") || labelLower.equals("gms") || labelLower.equals("gma") || labelLower.equals("gmsp")))) {
+            if (sender.hasPermission(Permission.GM_OTHERS)) {
+                if (args.length > 0) {
+                    target = Bukkit.getPlayer(args[0]);
+                    if (target == null) {
+                        sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                        return true;
+                    }
+                }
+            }
+        }
+
         if (target == null) {
             if (sender instanceof Player) {
                 target = (Player) sender;
@@ -104,5 +120,53 @@ public class GamemodeCommand implements CommandExecutor {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (!sender.hasPermission(Permission.GM)) {
+            return completions;
+        }
+
+        String labelLower = alias.toLowerCase();
+
+        if (args.length == 0) {
+            if (sender.hasPermission(Permission.GM_OTHERS)) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    completions.add(player.getName());
+                }
+            }
+        } else if (args.length == 1) {
+            if ((labelLower.equals("gm") || labelLower.equals("gamemode")) && sender.hasPermission(Permission.GM_OTHERS)) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
+                        completions.add(player.getName());
+                    }
+                }
+            }
+            
+            if (args[0].isEmpty() || "survival".startsWith(args[0].toLowerCase()) || "s".startsWith(args[0].toLowerCase())) {
+                completions.add("survival");
+            }
+            if (args[0].isEmpty() || "creative".startsWith(args[0].toLowerCase()) || "c".startsWith(args[0].toLowerCase())) {
+                completions.add("creative");
+            }
+            if (args[0].isEmpty() || "adventure".startsWith(args[0].toLowerCase()) || "a".startsWith(args[0].toLowerCase())) {
+                completions.add("adventure");
+            }
+            if (args[0].isEmpty() || "spectator".startsWith(args[0].toLowerCase()) || "sp".startsWith(args[0].toLowerCase())) {
+                completions.add("spectator");
+            }
+        } else if (args.length == 2 && sender.hasPermission(Permission.GM_OTHERS)) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                if (player.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
+                    completions.add(player.getName());
+                }
+            }
+        }
+
+        return completions;
     }
 }

@@ -81,7 +81,7 @@ public final class MCBasics extends JavaPlugin {
         getCommand("gamemode").setExecutor(gamemodeCmd);
         getCommand("gamemode").setTabCompleter(tabCompleter);
 
-        getCommand("invsee").setExecutor(new InvseeCommand());
+        getCommand("invsee").setExecutor(new InventoryCommand());
         getCommand("invsee").setTabCompleter(tabCompleter);
 
         getCommand("tphere").setExecutor(new TphereCommand());

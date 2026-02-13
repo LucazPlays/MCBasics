@@ -21,7 +21,7 @@ commands:
       - gma
       - gmsp
   invsee:
-    description: View another player's inventory
+    description: Live edit a player's inventory and armor
     usage: /invsee <player>
   tphere:
     description: Teleport a player to you

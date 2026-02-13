@@ -26,7 +26,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("speed <1-10> [p]", "Set walk speed", Permission.SPEED),
             new CommandInfo("gamemode <0-3> [p]", "Change gamemode", Permission.GM),
             new CommandInfo("vanish [p]", "Toggle vanish", Permission.VANISH),
-            new CommandInfo("invsee <p>", "View inventory", Permission.INVSEE),
+            new CommandInfo("invsee <p>", "Edit inventory live", Permission.INVSEE),
             new CommandInfo("tphere <p]", "Teleport to you", Permission.TPHERE),
             new CommandInfo("unsafeenchant <ench> <lvl>", "Add unsafe enchant", Permission.UNSAFEENCHANT),
             new CommandInfo("enchant <ench> <lvl>", "Add safe enchant", Permission.ENCHANT),

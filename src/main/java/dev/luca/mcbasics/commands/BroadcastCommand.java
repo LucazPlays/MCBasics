@@ -4,12 +4,15 @@ import dev.luca.mcbasics.api.Message;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class BroadcastCommand implements CommandExecutor {
+
+    private static final MiniMessage miniMessage = MiniMessage.miniMessage();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,9 +32,11 @@ public class BroadcastCommand implements CommandExecutor {
         }
         String message = messageBuilder.toString().trim();
 
+        String formattedMessage = message.replace("&", "§");
+
         Component broadcastMessage = Component.text()
                 .append(Component.text("[Broadcast] ", NamedTextColor.GOLD))
-                .append(Component.text(message, NamedTextColor.WHITE))
+                .append(miniMessage.deserialize(formattedMessage))
                 .build();
 
         Bukkit.broadcast(broadcastMessage);

@@ -35,6 +35,9 @@ commands:
   speed:
     description: Set walking speed
     usage: /speed <1-10> [player]
+  flyspeed:
+    description: Set flight speed
+    usage: /flyspeed <1-10> [player]
   fly:
     description: Toggle flight
     usage: /fly [player]
@@ -89,6 +92,8 @@ permissions:
       mcbasics.heal.others: true
       mcbasics.speed: true
       mcbasics.speed.others: true
+      mcbasics.flyspeed: true
+      mcbasics.flyspeed.others: true
       mcbasics.fly: true
       mcbasics.fly.others: true
       mcbasics.unsafeenchant: true
@@ -140,6 +145,12 @@ permissions:
     default: true
   mcbasics.speed.others:
     description: Allows changing other players' speed
+    default: op
+  mcbasics.flyspeed:
+    description: Allows use of /flyspeed
+    default: true
+  mcbasics.flyspeed.others:
+    description: Allows changing other players' fly speed
     default: op
   mcbasics.fly:
     description: Allows use of /fly

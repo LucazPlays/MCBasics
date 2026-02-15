@@ -36,7 +36,9 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
         } else if (labelLower.equals("gmsp") || labelLower.equals("spectator")) {
             mode = GameMode.SPECTATOR;
         } else if (labelLower.equals("gamemode") || labelLower.equals("gm")) {
-            if (args.length > 0) {
+            if (args.length == 0) {
+                mode = GameMode.SURVIVAL;
+            } else {
                 String firstArg = args[0].toLowerCase();
 
                 GameMode parsedMode = parseGamemode(firstArg);

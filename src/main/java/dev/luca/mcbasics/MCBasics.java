@@ -96,6 +96,9 @@ public final class MCBasics extends JavaPlugin {
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("speed").setTabCompleter(tabCompleter);
 
+        getCommand("flyspeed").setExecutor(new SpeedCommand());
+        getCommand("flyspeed").setTabCompleter(tabCompleter);
+
         getCommand("fly").setExecutor(new FlyCommand());
         getCommand("fly").setTabCompleter(tabCompleter);
 

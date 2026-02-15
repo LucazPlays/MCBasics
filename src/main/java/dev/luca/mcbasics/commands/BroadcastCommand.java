@@ -3,6 +3,7 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.api.Message;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +29,10 @@ public class BroadcastCommand implements CommandExecutor {
         }
         String message = messageBuilder.toString().trim();
 
-        Component broadcastMessage = Message.getComponent("broadcast.message", message);
+        Component broadcastMessage = Component.text()
+                .append(Component.text("[Broadcast] ", NamedTextColor.GOLD))
+                .append(Component.text(message, NamedTextColor.WHITE))
+                .build();
 
         Bukkit.broadcast(broadcastMessage);
 

@@ -22,18 +22,30 @@ public class TphereCommand implements CommandExecutor {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
-            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
-            return true;
-        }
-
         if (!(sender instanceof Player)) {
             sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         Player teleporter = (Player) sender;
+
+        if (args[0].equalsIgnoreCase("@a")) {
+            int count = 0;
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                if (target.equals(teleporter)) continue;
+                target.teleport(teleporter.getLocation());
+                target.sendMessage(Message.getComponent("tphere.you_teleported", "<gradient:#48dbfb:#1dd1a1>✦ You have been teleported to %sender%!</gradient>", "sender", teleporter.getName()));
+                count++;
+            }
+            teleporter.sendMessage(Message.getComponent("tphere.teleported_all", "<gradient:#48dbfb:#1dd1a1>✦ %count% players teleported to you!</gradient>", "count", String.valueOf(count)));
+            return true;
+        }
+
+        Player target = Bukkit.getPlayer(args[0]);
+        if (target == null) {
+            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+            return true;
+        }
 
         if (target.equals(teleporter)) {
             sender.sendMessage(Message.getComponent("general.you_cant_target_self", "<gradient:#ff6b6b:#ee5a24>✖ You can't target yourself!</gradient>"));

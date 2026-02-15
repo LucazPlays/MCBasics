@@ -17,6 +17,29 @@ public class FlyCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("@a")) {
+            if (!sender.hasPermission(Permission.FLY_OTHERS)) {
+                sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+                return true;
+            }
+
+            int count = 0;
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                boolean newFlyState = !target.getAllowFlight();
+                target.setAllowFlight(newFlyState);
+                target.setFlying(newFlyState);
+
+                if (newFlyState) {
+                    target.sendMessage(Message.getComponent("fly.enabled", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled!</gradient>"));
+                } else {
+                    target.sendMessage(Message.getComponent("fly.disabled", "<gradient:#ff6b6b:#ee5a24>✦ Flight disabled!</gradient>"));
+                }
+                count++;
+            }
+            sender.sendMessage(Message.getComponent("fly.toggled_all", "<gradient:#48dbfb:#1dd1a1>✦ Flight toggled for %count% players!</gradient>", "count", String.valueOf(count)));
+            return true;
+        }
+
         Player target;
 
         if (args.length > 0 && sender.hasPermission(Permission.FLY_OTHERS)) {

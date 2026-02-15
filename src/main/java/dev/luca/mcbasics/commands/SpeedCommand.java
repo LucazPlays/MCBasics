@@ -22,7 +22,6 @@ public class SpeedCommand implements CommandExecutor {
             return true;
         }
 
-        Player target;
         float speed = 1.0f;
 
         if (args.length > 0) {
@@ -39,7 +38,37 @@ public class SpeedCommand implements CommandExecutor {
             }
         }
 
+        if (args.length > 1 && args[1].equalsIgnoreCase("@a")) {
+            if (!sender.hasPermission(othersPermission)) {
+                sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+                return true;
+            }
+
+            int count = 0;
+            String speedNum = Message.get("speed.speed_number", "%speed%", "speed", String.valueOf((int)(speed * 10)));
+            
+            for (Player target : Bukkit.getOnlinePlayers()) {
+                if (isFlying) {
+                    target.setFlySpeed(speed);
+                    target.sendMessage(Message.getComponent("speed.flight_set", "<gradient:#48dbfb:#1dd1a1>✦ Your flight speed has been set to %speed%!</gradient>", "speed", speedNum));
+                } else {
+                    target.setWalkSpeed(speed);
+                    target.sendMessage(Message.getComponent("speed.walking_set", "<gradient:#48dbfb:#1dd1a1>✦ Your walking speed has been set to %speed%!</gradient>", "speed", speedNum));
+                }
+                count++;
+            }
+            
+            if (isFlying) {
+                sender.sendMessage(Message.getComponent("speed.flight_set_all", "<gradient:#48dbfb:#1dd1a1>✦ Flight speed set for %count% players!</gradient>", "count", String.valueOf(count), "speed", speedNum));
+            } else {
+                sender.sendMessage(Message.getComponent("speed.walking_set_all", "<gradient:#48dbfb:#1dd1a1>✦ Walking speed set for %count% players!</gradient>", "count", String.valueOf(count), "speed", speedNum));
+            }
+            return true;
+        }
+
         String speedType = isFlying ? "flight" : "walking";
+
+        Player target;
 
         if (args.length > 1 && sender.hasPermission(othersPermission)) {
             target = Bukkit.getPlayer(args[1]);

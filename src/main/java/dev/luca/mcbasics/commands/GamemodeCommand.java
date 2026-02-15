@@ -82,9 +82,9 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!targetAll && target == null && (args.length > 0 || (labelLower.equals("gmc") || labelLower.equals("gms") || labelLower.equals("gma") || labelLower.equals("gmsp")))) {
-            if (sender.hasPermission(Permission.GM_OTHERS)) {
-                if (args.length > 0) {
+        if (!targetAll && target == null) {
+            if (labelLower.equals("gmc") || labelLower.equals("gms") || labelLower.equals("gma") || labelLower.equals("gmsp")) {
+                if (sender.hasPermission(Permission.GM_OTHERS) && args.length > 0) {
                     if (args[0].equalsIgnoreCase("@a")) {
                         targetAll = true;
                     } else {

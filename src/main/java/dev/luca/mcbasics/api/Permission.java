@@ -42,6 +42,13 @@ public final class Permission {
     public static final String ANVIL = "mcbasics.anvil";
     public static final String HELP = "mcbasics.help";
     public static final String ITEM = "mcbasics.item";
+    public static final String FREEZE = "mcbasics.freeze";
+    public static final String BROADCAST = "mcbasics.broadcast";
+    public static final String HAT = "mcbasics.hat";
+    public static final String SKULL = "mcbasics.skull";
+    public static final String REPAIR = "mcbasics.repair";
+    public static final String DAY = "mcbasics.day";
+    public static final String NIGHT = "mcbasics.night";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

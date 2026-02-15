@@ -130,6 +130,20 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("god").setExecutor(new GodCommand());
 
+        getCommand("freeze").setExecutor(new FreezeCommand());
+
+        getCommand("broadcast").setExecutor(new BroadcastCommand());
+
+        getCommand("hat").setExecutor(new HatCommand());
+
+        getCommand("skull").setExecutor(new SkullCommand());
+
+        getCommand("repair").setExecutor(new RepairCommand());
+
+        getCommand("day").setExecutor(new DayCommand());
+
+        getCommand("night").setExecutor(new NightCommand());
+
         getCommand("craft").setExecutor(new CraftCommand());
         getCommand("anvil").setExecutor(new AnvilCommand());
     }

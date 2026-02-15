@@ -70,6 +70,27 @@ commands:
   god:
     description: Toggle god mode (no damage)
     usage: /god [player]
+  freeze:
+    description: Freeze a player
+    usage: /freeze <player>
+  broadcast:
+    description: Send a broadcast message
+    usage: /broadcast <message>
+  hat:
+    description: Equip item as hat
+    usage: /hat
+  skull:
+    description: Get a player's skull
+    usage: /skull <player>
+  repair:
+    description: Repair item in hand
+    usage: /repair
+  day:
+    description: Set time to day
+    usage: /day
+  night:
+    description: Set time to night
+    usage: /night
   craft:
     description: Open a crafting table
     usage: /craft
@@ -104,6 +125,14 @@ permissions:
       mcbasics.setlore: true
       mcbasics.sudo: true
       mcbasics.god: true
+      mcbasics.god.others: true
+      mcbasics.freeze: true
+      mcbasics.broadcast: true
+      mcbasics.hat: true
+      mcbasics.skull: true
+      mcbasics.repair: true
+      mcbasics.day: true
+      mcbasics.night: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -203,3 +232,24 @@ permissions:
   mcbasics.item:
     description: Allows use of /i
     default: true
+  mcbasics.freeze:
+    description: Allows use of /freeze
+    default: op
+  mcbasics.broadcast:
+    description: Allows use of /broadcast
+    default: op
+  mcbasics.hat:
+    description: Allows use of /hat
+    default: true
+  mcbasics.skull:
+    description: Allows use of /skull
+    default: true
+  mcbasics.repair:
+    description: Allows use of /repair
+    default: true
+  mcbasics.day:
+    description: Allows use of /day
+    default: op
+  mcbasics.night:
+    description: Allows use of /night
+    default: op

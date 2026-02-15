@@ -17,6 +17,24 @@ public class HealCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("@a")) {
+            if (!sender.hasPermission(Permission.HEAL_OTHERS)) {
+                sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+                return true;
+            }
+
+            int count = 0;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.setHealth(20.0);
+                player.setFireTicks(0);
+                player.sendMessage(Message.getComponent("heal.healed", "<gradient:#48dbfb:#1dd1a1>✦ You have been healed!</gradient>"));
+                count++;
+            }
+
+            sender.sendMessage(Message.getComponent("heal.healed_all", "<gradient:#48dbfb:#1dd1a1>✦ All players (%count%) have been healed!</gradient>", "count", String.valueOf(count)));
+            return true;
+        }
+
         Player target;
 
         if (args.length > 0 && sender.hasPermission(Permission.HEAL_OTHERS)) {

@@ -17,6 +17,24 @@ public class FeedCommand implements CommandExecutor {
             return true;
         }
 
+        if (args.length > 0 && args[0].equalsIgnoreCase("@a")) {
+            if (!sender.hasPermission(Permission.FEED_OTHERS)) {
+                sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+                return true;
+            }
+
+            int count = 0;
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.setFoodLevel(20);
+                player.setSaturation(20f);
+                player.sendMessage(Message.getComponent("feed.fed", "<gradient:#48dbfb:#1dd1a1>✦ You have been fed!</gradient>"));
+                count++;
+            }
+
+            sender.sendMessage(Message.getComponent("feed.fed_all", "<gradient:#48dbfb:#1dd1a1>✦ All players (%count%) have been fed!</gradient>", "count", String.valueOf(count)));
+            return true;
+        }
+
         Player target;
 
         if (args.length > 0 && sender.hasPermission(Permission.FEED_OTHERS)) {

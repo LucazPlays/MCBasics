@@ -130,24 +130,32 @@ public class InventoryCommand implements CommandExecutor, Listener {
         Inventory clickedInv = event.getClickedInventory();
         if (clickedInv == null) return;
 
-        if (!viewInventories.containsValue(clickedInv)) {
-            return;
-        }
+        Inventory viewInv = viewInventories.get(viewer.getUniqueId());
+        if (viewInv == null || clickedInv != viewInv) return;
 
         int slot = event.getRawSlot();
         
+        Bukkit.getScheduler().runTaskLater(MCBasics.getInstance(), () -> {
+            syncSlotToTarget(viewInv, target, slot);
+        }, 1L);
+    }
+
+    private void syncSlotToTarget(Inventory view, Player target, int slot) {
+        ItemStack item = view.getItem(slot);
+        PlayerInventory targetInv = target.getInventory();
+        
         if (slot < 36) {
-            target.getInventory().setItem(slot, event.getCursor());
+            targetInv.setItem(slot, item);
         } else if (slot == 36) {
-            target.getInventory().setHelmet(event.getCursor());
+            targetInv.setHelmet(item);
         } else if (slot == 37) {
-            target.getInventory().setChestplate(event.getCursor());
+            targetInv.setChestplate(item);
         } else if (slot == 38) {
-            target.getInventory().setLeggings(event.getCursor());
+            targetInv.setLeggings(item);
         } else if (slot == 39) {
-            target.getInventory().setBoots(event.getCursor());
+            targetInv.setBoots(item);
         } else if (slot == 40) {
-            target.getInventory().setItemInOffHand(event.getCursor());
+            targetInv.setItemInOffHand(item);
         }
     }
 
@@ -160,27 +168,16 @@ public class InventoryCommand implements CommandExecutor, Listener {
         
         if (target == null) return;
         
-        Inventory topInv = event.getView().getTopInventory();
-        if (!viewInventories.containsValue(topInv)) return;
+        Inventory viewInv = viewInventories.get(viewer.getUniqueId());
+        if (viewInv == null) return;
 
-        for (Map.Entry<Integer, ItemStack> entry : event.getNewItems().entrySet()) {
-            int slot = entry.getKey();
-            ItemStack item = entry.getValue();
-            
-            if (slot < 36) {
-                target.getInventory().setItem(slot, item);
-            } else if (slot == 36) {
-                target.getInventory().setHelmet(item);
-            } else if (slot == 37) {
-                target.getInventory().setChestplate(item);
-            } else if (slot == 38) {
-                target.getInventory().setLeggings(item);
-            } else if (slot == 39) {
-                target.getInventory().setBoots(item);
-            } else if (slot == 40) {
-                target.getInventory().setItemInOffHand(item);
+        Bukkit.getScheduler().runTaskLater(MCBasics.getInstance(), () -> {
+            for (int slot : event.getRawSlots()) {
+                if (slot < 45) {
+                    syncSlotToTarget(viewInv, target, slot);
+                }
             }
-        }
+        }, 1L);
     }
 
     @EventHandler

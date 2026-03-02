@@ -103,6 +103,9 @@ commands:
   setitemdamage:
     description: Set exact durability damage of held item
     usage: /setitemdamage <damage>
+  oplist:
+    description: Open operator management GUI
+    usage: /oplist
 
 permissions:
   mcbasics.*:
@@ -141,6 +144,7 @@ permissions:
       mcbasics.night: true
       mcbasics.clearitems: true
       mcbasics.itemdamage: true
+      mcbasics.oplist: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -266,4 +270,7 @@ permissions:
     default: op
   mcbasics.itemdamage:
     description: Allows use of /setitemdamage
+    default: op
+  mcbasics.oplist:
+    description: Allows use of /oplist
     default: op

@@ -50,6 +50,7 @@ public final class Permission {
     public static final String DAY = "mcbasics.day";
     public static final String NIGHT = "mcbasics.night";
     public static final String CLEARITEMS = "mcbasics.clearitems";
+    public static final String ITEMDAMAGE = "mcbasics.itemdamage";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

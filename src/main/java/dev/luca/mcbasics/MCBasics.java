@@ -55,6 +55,7 @@ public final class MCBasics extends JavaPlugin {
         MainTabCompleter tabCompleter = new MainTabCompleter();
         GamemodeCommand gamemodeCmd = new GamemodeCommand();
         ClearItemsCommand clearItemsCommand = new ClearItemsCommand();
+        SetItemDamageCommand setItemDamageCommand = new SetItemDamageCommand();
 
         getCommand("help").setExecutor(new HelpCommand());
         getCommand("help").setTabCompleter(new HelpCommand());
@@ -133,6 +134,9 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("clearitems").setExecutor(clearItemsCommand);
         getCommand("clearitems").setTabCompleter(clearItemsCommand);
+
+        getCommand("setitemdamage").setExecutor(setItemDamageCommand);
+        getCommand("setitemdamage").setTabCompleter(setItemDamageCommand);
     }
 
     public static MCBasics getInstance() {

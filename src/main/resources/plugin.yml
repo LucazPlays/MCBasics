@@ -100,6 +100,9 @@ commands:
   clearitems:
     description: Clear dropped items around you
     usage: /clearitems [radius]
+  setitemdamage:
+    description: Set exact durability damage of held item
+    usage: /setitemdamage <damage>
 
 permissions:
   mcbasics.*:
@@ -137,6 +140,7 @@ permissions:
       mcbasics.day: true
       mcbasics.night: true
       mcbasics.clearitems: true
+      mcbasics.itemdamage: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -259,4 +263,7 @@ permissions:
     default: op
   mcbasics.clearitems:
     description: Allows use of /clearitems
+    default: op
+  mcbasics.itemdamage:
+    description: Allows use of /setitemdamage
     default: op

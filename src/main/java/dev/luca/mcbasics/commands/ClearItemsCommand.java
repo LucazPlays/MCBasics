@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
@@ -56,7 +57,7 @@ public class ClearItemsCommand implements CommandExecutor, TabCompleter {
         int removed = 0;
 
         for (Entity entity : player.getWorld().getNearbyEntities(center, radius, radius, radius)) {
-            if (!(entity instanceof Item)) {
+            if (!(entity instanceof Item) && !(entity instanceof ExperienceOrb)) {
                 continue;
             }
 
@@ -68,7 +69,7 @@ public class ClearItemsCommand implements CommandExecutor, TabCompleter {
 
         sender.sendMessage(Message.getComponent(
                 "clearitems.success",
-                "<gradient:#48dbfb:#1dd1a1>✦ Cleared %count% dropped item(s) in a radius of %radius% blocks!</gradient>",
+                "<gradient:#48dbfb:#1dd1a1>✦ Cleared %count% dropped item(s) and XP orb(s) in a radius of %radius% blocks!</gradient>",
                 "count", String.valueOf(removed),
                 "radius", String.valueOf(radius)
         ));

@@ -11,7 +11,9 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
@@ -154,52 +156,65 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = new ArrayList<>();
+        Set<String> completions = new LinkedHashSet<>();
 
         if (!sender.hasPermission(Permission.GM)) {
-            return completions;
+            return new ArrayList<>();
         }
 
-        String labelLower = alias.toLowerCase();
+        String aliasLower = alias.toLowerCase();
+        boolean fixedModeAlias = aliasLower.equals("gmc")
+                || aliasLower.equals("gms")
+                || aliasLower.equals("gma")
+                || aliasLower.equals("gmsp")
+                || aliasLower.equals("survival")
+                || aliasLower.equals("creative")
+                || aliasLower.equals("adventure")
+                || aliasLower.equals("spectator");
 
-        if (args.length == 0) {
-            if (sender.hasPermission(Permission.GM_OTHERS)) {
-                completions.add("@a");
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    completions.add(player.getName());
-                }
+        if (fixedModeAlias) {
+            if (args.length == 1 && sender.hasPermission(Permission.GM_OTHERS)) {
+                addPlayerCompletions(completions, args[0]);
             }
-        } else if (args.length == 1) {
-            if ((labelLower.equals("gm") || labelLower.equals("gamemode")) && sender.hasPermission(Permission.GM_OTHERS)) {
-                completions.add("@a");
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                        completions.add(player.getName());
-                    }
-                }
-            }
-            
-            if (args[0].isEmpty() || "survival".startsWith(args[0].toLowerCase()) || "s".startsWith(args[0].toLowerCase())) {
+            return new ArrayList<>(completions);
+        }
+
+        if (args.length == 1) {
+            String partial = args[0].toLowerCase();
+
+            if ("survival".startsWith(partial) || "s".startsWith(partial)) {
                 completions.add("survival");
             }
-            if (args[0].isEmpty() || "creative".startsWith(args[0].toLowerCase()) || "c".startsWith(args[0].toLowerCase())) {
+            if ("creative".startsWith(partial) || "c".startsWith(partial)) {
                 completions.add("creative");
             }
-            if (args[0].isEmpty() || "adventure".startsWith(args[0].toLowerCase()) || "a".startsWith(args[0].toLowerCase())) {
+            if ("adventure".startsWith(partial) || "a".startsWith(partial)) {
                 completions.add("adventure");
             }
-            if (args[0].isEmpty() || "spectator".startsWith(args[0].toLowerCase()) || "sp".startsWith(args[0].toLowerCase())) {
+            if ("spectator".startsWith(partial) || "sp".startsWith(partial)) {
                 completions.add("spectator");
             }
-        } else if (args.length == 2 && sender.hasPermission(Permission.GM_OTHERS)) {
-            completions.add("@a");
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
-                    completions.add(player.getName());
-                }
+
+            if (sender.hasPermission(Permission.GM_OTHERS)) {
+                addPlayerCompletions(completions, args[0]);
             }
+        } else if (args.length == 2 && sender.hasPermission(Permission.GM_OTHERS)) {
+            addPlayerCompletions(completions, args[1]);
         }
 
-        return completions;
+        return new ArrayList<>(completions);
+    }
+
+    private void addPlayerCompletions(Set<String> completions, String input) {
+        String partial = input.toLowerCase();
+        if ("@a".startsWith(partial)) {
+            completions.add("@a");
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getName().toLowerCase().startsWith(partial)) {
+                completions.add(player.getName());
+            }
+        }
     }
 }

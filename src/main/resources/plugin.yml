@@ -97,6 +97,9 @@ commands:
   anvil:
     description: Open an anvil
     usage: /anvil
+  clearitems:
+    description: Clear dropped items around you
+    usage: /clearitems [radius]
 
 permissions:
   mcbasics.*:
@@ -133,6 +136,7 @@ permissions:
       mcbasics.repair: true
       mcbasics.day: true
       mcbasics.night: true
+      mcbasics.clearitems: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -252,4 +256,7 @@ permissions:
     default: op
   mcbasics.night:
     description: Allows use of /night
+    default: op
+  mcbasics.clearitems:
+    description: Allows use of /clearitems
     default: op

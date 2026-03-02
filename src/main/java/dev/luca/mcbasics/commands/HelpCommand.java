@@ -33,6 +33,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("day", "Set time to day", Permission.DAY),
             new CommandInfo("night", "Set time to night", Permission.NIGHT),
             new CommandInfo("repair", "Repair held item", Permission.REPAIR),
+            new CommandInfo("clearitems [radius]", "Clear dropped items nearby", Permission.CLEARITEMS),
             new CommandInfo("skull [p]", "Get player skull", Permission.SKULL),
             new CommandInfo("hat", "Wear held item", Permission.HAT),
             new CommandInfo("unsafeenchant <ench> <lvl>", "Add unsafe enchant", Permission.UNSAFEENCHANT),

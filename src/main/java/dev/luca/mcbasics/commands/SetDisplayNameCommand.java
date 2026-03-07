@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
@@ -19,17 +19,17 @@ public class SetDisplayNameCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.ITEM)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Message.getComponent("setdisplayname.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /setdisplayname <name></gradient>"));
+            sender.sendMessage(FormattedMessage.create("setdisplayname.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /setdisplayname <name></gradient>"));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class SetDisplayNameCommand implements CommandExecutor {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item == null || item.getType() == org.bukkit.Material.AIR) {
-            sender.sendMessage(Message.getComponent("setdisplayname.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("setdisplayname.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
             return true;
         }
 
@@ -55,7 +55,7 @@ public class SetDisplayNameCommand implements CommandExecutor {
             item.setItemMeta(meta);
         }
 
-        sender.sendMessage(Message.getComponent("setdisplayname.success", "<gradient:#48dbfb:#1dd1a1>✦ Item display name set!</gradient>"));
+        sender.sendMessage(FormattedMessage.create("setdisplayname.success", "<gradient:#48dbfb:#1dd1a1>✦ Item display name set!</gradient>"));
 
         return true;
     }

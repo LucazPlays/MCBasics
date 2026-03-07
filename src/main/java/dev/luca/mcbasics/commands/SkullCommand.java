@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,17 +18,17 @@ public class SkullCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.SKULL)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Message.getComponent("skull.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /skull <player></gradient>"));
+            sender.sendMessage(FormattedMessage.create("skull.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /skull <player></gradient>"));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class SkullCommand implements CommandExecutor {
 
         Player target = Bukkit.getPlayer(targetName);
         if (target == null) {
-            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
 
@@ -49,7 +49,7 @@ public class SkullCommand implements CommandExecutor {
 
         player.getInventory().addItem(skull);
 
-        sender.sendMessage(Message.getComponent("skull.received", "<gradient:#48dbfb:#1dd1a1>✦ Received %target%'s head!</gradient>", "target", target.getName()));
+        sender.sendMessage(FormattedMessage.create("skull.received", "<gradient:#48dbfb:#1dd1a1>✦ Received %target%'s head!</gradient>", "target", target.getName()));
 
         return true;
     }

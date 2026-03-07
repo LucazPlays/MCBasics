@@ -1,7 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.MCBasics;
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -26,7 +26,7 @@ public class GodCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.GOD)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
@@ -35,27 +35,27 @@ public class GodCommand implements CommandExecutor, Listener {
         if (args.length > 0 && sender.hasPermission(Permission.GOD_OTHERS)) {
             target = sender.getServer().getPlayer(args[0]);
             if (target == null) {
-                sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         boolean isGod = toggleGodMode(target);
 
         if (isGod) {
-            target.sendMessage(Message.getComponent("god.enabled", "<gradient:#48dbfb:#1dd1a1>✦ God mode enabled!</gradient>"));
+            target.sendMessage(FormattedMessage.create("god.enabled", "<gradient:#48dbfb:#1dd1a1>✦ God mode enabled!</gradient>"));
             if (target != sender) {
-                sender.sendMessage(Message.getComponent("god.enabled_other", "<gradient:#48dbfb:#1dd1a1>✦ God mode enabled for %target%!</gradient>", "target", target.getName()));
+                sender.sendMessage(FormattedMessage.create("god.enabled_other", "<gradient:#48dbfb:#1dd1a1>✦ God mode enabled for %target%!</gradient>", "target", target.getName()));
             }
         } else {
-            target.sendMessage(Message.getComponent("god.disabled", "<gradient:#ff6b6b:#ee5a24>✦ God mode disabled!</gradient>"));
+            target.sendMessage(FormattedMessage.create("god.disabled", "<gradient:#ff6b6b:#ee5a24>✦ God mode disabled!</gradient>"));
             if (target != sender) {
-                sender.sendMessage(Message.getComponent("god.disabled_other", "<gradient:#ff6b6b:#ee5a24>✦ God mode disabled for %target%!</gradient>", "target", target.getName()));
+                sender.sendMessage(FormattedMessage.create("god.disabled_other", "<gradient:#ff6b6b:#ee5a24>✦ God mode disabled for %target%!</gradient>", "target", target.getName()));
             }
         }
 

@@ -1,7 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.MCBasics;
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,17 +50,17 @@ public class OpListCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.OPLIST)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length != 0) {
-            sender.sendMessage(Message.getComponent("oplist.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /oplist</gradient>"));
+            sender.sendMessage(FormattedMessage.create("oplist.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /oplist</gradient>"));
             return true;
         }
 
@@ -160,7 +160,7 @@ public class OpListCommand implements CommandExecutor, Listener {
         OfflinePlayer operator = Bukkit.getOfflinePlayer(operatorUuid);
         String operatorName = operator.getName();
         if (operatorName == null || operatorName.isBlank()) {
-            viewer.sendMessage(Message.getComponent("oplist.invalid_target", "<gradient:#ff6b6b:#ee5a24>✖ Could not resolve this operator's name.</gradient>"));
+            viewer.sendMessage(FormattedMessage.create("oplist.invalid_target", "<gradient:#ff6b6b:#ee5a24>✖ Could not resolve this operator's name.</gradient>"));
             return;
         }
 
@@ -177,7 +177,7 @@ public class OpListCommand implements CommandExecutor, Listener {
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "op " + operatorName + " " + level + " true");
         configuredLevels.put(operatorUuid, level);
-        viewer.sendMessage(Message.getComponent(
+        viewer.sendMessage(FormattedMessage.create(
                 "oplist.level_set",
                 "<gradient:#48dbfb:#1dd1a1>✦ Set OP level of %target% to %level%!</gradient>",
                 "target", operatorName,

@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -23,17 +23,17 @@ public class ClearItemsCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.CLEARITEMS)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length > 1) {
-            sender.sendMessage(Message.getComponent("clearitems.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /clearitems [radius]</gradient>"));
+            sender.sendMessage(FormattedMessage.create("clearitems.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /clearitems [radius]</gradient>"));
             return true;
         }
 
@@ -42,12 +42,12 @@ public class ClearItemsCommand implements CommandExecutor, TabCompleter {
             try {
                 radius = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(Message.getComponent("clearitems.invalid_radius", "<gradient:#ff6b6b:#ee5a24>✖ Radius must be a number!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("clearitems.invalid_radius", "<gradient:#ff6b6b:#ee5a24>✖ Radius must be a number!</gradient>"));
                 return true;
             }
 
             if (radius < 1 || radius > MAX_RADIUS) {
-                sender.sendMessage(Message.getComponent("clearitems.radius_range", "<gradient:#ff6b6b:#ee5a24>✖ Radius must be between 1 and 200!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("clearitems.radius_range", "<gradient:#ff6b6b:#ee5a24>✖ Radius must be between 1 and 200!</gradient>"));
                 return true;
             }
         }
@@ -67,7 +67,7 @@ public class ClearItemsCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        sender.sendMessage(Message.getComponent(
+        sender.sendMessage(FormattedMessage.create(
                 "clearitems.success",
                 "<gradient:#48dbfb:#1dd1a1>✦ Cleared %count% dropped item(s) and XP orb(s) in a radius of %radius% blocks!</gradient>",
                 "count", String.valueOf(removed),

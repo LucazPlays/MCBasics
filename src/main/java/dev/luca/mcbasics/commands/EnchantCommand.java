@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,17 +19,17 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.ENCHANT)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.getComponent("enchant.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /enchant <enchantment> <level></gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /enchant <enchantment> <level></gradient>"));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item == null || item.getType() == org.bukkit.Material.AIR) {
-            sender.sendMessage(Message.getComponent("enchant.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
             return true;
         }
 
@@ -47,45 +47,45 @@ public class EnchantCommand implements CommandExecutor, TabCompleter {
         try {
             level = Integer.parseInt(args[1]);
             if (level < 1) {
-                sender.sendMessage(Message.getComponent("enchant.invalid_level", "<gradient:#ff6b6b:#ee5a24>✖ Level must be 1 or higher!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("enchant.invalid_level", "<gradient:#ff6b6b:#ee5a24>✖ Level must be 1 or higher!</gradient>"));
                 return true;
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(Message.getComponent("enchant.invalid_level", "<gradient:#ff6b6b:#ee5a24>✖ Invalid level!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.invalid_level", "<gradient:#ff6b6b:#ee5a24>✖ Invalid level!</gradient>"));
             return true;
         }
 
         Enchantment enchantment = getEnchantmentByName(enchantmentName);
         if (enchantment == null) {
-            sender.sendMessage(Message.getComponent("enchant.invalid_enchantment", "<gradient:#ff6b6b:#ee5a24>✖ Invalid enchantment!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.invalid_enchantment", "<gradient:#ff6b6b:#ee5a24>✖ Invalid enchantment!</gradient>"));
             return true;
         }
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {
-            sender.sendMessage(Message.getComponent("enchant.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to add enchantment!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to add enchantment!</gradient>"));
             return true;
         }
 
         if (!enchantment.canEnchantItem(item)) {
-            sender.sendMessage(Message.getComponent("enchant.cant_enchant", "<gradient:#ff6b6b:#ee5a24>✖ This enchantment cannot be applied to this item!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.cant_enchant", "<gradient:#ff6b6b:#ee5a24>✖ This enchantment cannot be applied to this item!</gradient>"));
             return true;
         }
 
         int maxLevel = enchantment.getMaxLevel();
         if (level > maxLevel) {
-            sender.sendMessage(Message.getComponent("enchant.level_too_high", "<gradient:#ff6b6b:#ee5a24>✖ Max level for this enchantment is %max%!</gradient>", "max", String.valueOf(maxLevel)));
+            sender.sendMessage(FormattedMessage.create("enchant.level_too_high", "<gradient:#ff6b6b:#ee5a24>✖ Max level for this enchantment is %max%!</gradient>", "max", String.valueOf(maxLevel)));
             return true;
         }
 
         boolean success = addEnchantment(item, meta, enchantment, level);
 
         if (!success) {
-            sender.sendMessage(Message.getComponent("enchant.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to add enchantment!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("enchant.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to add enchantment!</gradient>"));
             return true;
         }
 
-        sender.sendMessage(Message.getComponent("enchant.success", "<gradient:#48dbfb:#1dd1a1>✦ Added %enchant% %level% to the item!</gradient>", "enchant", enchantmentName, "level", String.valueOf(level)));
+        sender.sendMessage(FormattedMessage.create("enchant.success", "<gradient:#48dbfb:#1dd1a1>✦ Added %enchant% %level% to the item!</gradient>", "enchant", enchantmentName, "level", String.valueOf(level)));
 
         return true;
     }

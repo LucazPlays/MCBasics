@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -20,7 +20,7 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.GM)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+                                sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
@@ -50,14 +50,14 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
                     if (args.length > 1) {
                         if (args[1].equalsIgnoreCase("@a")) {
                             if (!sender.hasPermission(Permission.GM_OTHERS)) {
-                                sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
                                 return true;
                             }
                             targetAll = true;
                         } else if (sender.hasPermission(Permission.GM_OTHERS)) {
                             target = Bukkit.getPlayer(args[1]);
                             if (target == null) {
-                                sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                                sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                                 return true;
                             }
                         }
@@ -68,19 +68,19 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
                     } else {
                         target = Bukkit.getPlayer(args[0]);
                         if (target == null) {
-                            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                            sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                             return true;
                         }
                     }
                 } else {
-                    sender.sendMessage(Message.getComponent("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
+                    sender.sendMessage(FormattedMessage.create("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
                     return true;
                 }
             }
         }
 
         if (mode == null) {
-            sender.sendMessage(Message.getComponent("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
+            sender.sendMessage(FormattedMessage.create("gamemode.invalid_mode", "<gradient:#ff6b6b:#ee5a24>✖ Invalid gamemode! Use 0, 1, 2, 3, survival, creative, adventure, or spectator</gradient>"));
             return true;
         }
 
@@ -92,7 +92,7 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
                     } else {
                         target = Bukkit.getPlayer(args[0]);
                         if (target == null) {
-                            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+                            sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                             return true;
                         }
                     }
@@ -104,10 +104,10 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
             int count = 0;
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.setGameMode(mode);
-                player.sendMessage(Message.getComponent("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", mode.name().toLowerCase()));
+                player.sendMessage(FormattedMessage.create("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", mode.name().toLowerCase()));
                 count++;
             }
-            sender.sendMessage(Message.getComponent("gamemode.set_all", "<gradient:#48dbfb:#1dd1a1>✦ All players (%count%) gamemode set to %mode%!</gradient>", "count", String.valueOf(count), "mode", mode.name().toLowerCase()));
+            sender.sendMessage(FormattedMessage.create("gamemode.set_all", "<gradient:#48dbfb:#1dd1a1>✦ All players (%count%) gamemode set to %mode%!</gradient>", "count", String.valueOf(count), "mode", mode.name().toLowerCase()));
             return true;
         }
 
@@ -115,7 +115,7 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
             if (sender instanceof Player) {
                 target = (Player) sender;
             } else {
-                sender.sendMessage(Message.getComponent("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
                 return true;
             }
         }
@@ -123,9 +123,9 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
         target.setGameMode(mode);
         String modeName = mode.name().toLowerCase();
 
-        target.sendMessage(Message.getComponent("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", modeName));
+        target.sendMessage(FormattedMessage.create("gamemode.set_to", "<gradient:#48dbfb:#1dd1a1>✦ Your gamemode has been set to %mode%!</gradient>", "mode", modeName));
         if (target != sender) {
-            sender.sendMessage(Message.getComponent("gamemode.set_other", "<gradient:#48dbfb:#1dd1a1>✦ %target%'s gamemode set to %mode%!</gradient>", "target", target.getName(), "mode", modeName));
+            sender.sendMessage(FormattedMessage.create("gamemode.set_other", "<gradient:#48dbfb:#1dd1a1>✦ %target%'s gamemode set to %mode%!</gradient>", "target", target.getName(), "mode", modeName));
         }
 
         return true;

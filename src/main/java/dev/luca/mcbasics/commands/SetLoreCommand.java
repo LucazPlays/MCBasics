@@ -1,6 +1,6 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
@@ -20,17 +20,17 @@ public class SetLoreCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.ITEM)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Message.getComponent("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.getComponent("setlore.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /setlore <linenumber> <text></gradient>"));
+            sender.sendMessage(FormattedMessage.create("setlore.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /setlore <linenumber> <text></gradient>"));
             return true;
         }
 
@@ -38,7 +38,7 @@ public class SetLoreCommand implements CommandExecutor {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item == null || item.getType() == org.bukkit.Material.AIR) {
-            sender.sendMessage(Message.getComponent("setlore.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("setlore.no_item", "<gradient:#ff6b6b:#ee5a24>✖ You must hold an item!</gradient>"));
             return true;
         }
 
@@ -46,11 +46,11 @@ public class SetLoreCommand implements CommandExecutor {
         try {
             lineNumber = Integer.parseInt(args[0]);
             if (lineNumber < 1) {
-                sender.sendMessage(Message.getComponent("setlore.invalid_line", "<gradient:#ff6b6b:#ee5a24>✖ Line number must be 1 or higher!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("setlore.invalid_line", "<gradient:#ff6b6b:#ee5a24>✖ Line number must be 1 or higher!</gradient>"));
                 return true;
             }
         } catch (NumberFormatException e) {
-            sender.sendMessage(Message.getComponent("setlore.invalid_line", "<gradient:#ff6b6b:#ee5a24>✖ Invalid line number!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("setlore.invalid_line", "<gradient:#ff6b6b:#ee5a24>✖ Invalid line number!</gradient>"));
             return true;
         }
 
@@ -63,7 +63,7 @@ public class SetLoreCommand implements CommandExecutor {
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {
-            sender.sendMessage(Message.getComponent("setlore.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to set lore!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("setlore.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to set lore!</gradient>"));
             return true;
         }
 
@@ -86,7 +86,7 @@ public class SetLoreCommand implements CommandExecutor {
 
         item.setItemMeta(meta);
 
-        sender.sendMessage(Message.getComponent("setlore.success", "<gradient:#48dbfb:#1dd1a1>✦ Lore line " + lineNumber + " set!</gradient>"));
+        sender.sendMessage(FormattedMessage.create("setlore.success", "<gradient:#48dbfb:#1dd1a1>✦ Lore line " + lineNumber + " set!</gradient>"));
 
         return true;
     }

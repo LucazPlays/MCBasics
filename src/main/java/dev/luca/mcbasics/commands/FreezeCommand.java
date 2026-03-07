@@ -1,7 +1,7 @@
 package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.MCBasics;
-import dev.luca.mcbasics.api.Message;
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -27,29 +27,29 @@ public class FreezeCommand implements CommandExecutor, Listener {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission(Permission.FREEZE)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(Message.getComponent("freeze.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /freeze <player></gradient>"));
+            sender.sendMessage(FormattedMessage.create("freeze.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /freeze <player></gradient>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
 
         boolean isFrozen = toggleFreeze(target);
 
         if (isFrozen) {
-            target.sendMessage(Message.getComponent("freeze.frozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been frozen!</gradient>"));
-            sender.sendMessage(Message.getComponent("freeze.frozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been frozen!</gradient>", "target", target.getName()));
+            target.sendMessage(FormattedMessage.create("freeze.frozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been frozen!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("freeze.frozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been frozen!</gradient>", "target", target.getName()));
         } else {
-            target.sendMessage(Message.getComponent("freeze.unfrozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been unfrozen!</gradient>"));
-            sender.sendMessage(Message.getComponent("freeze.unfrozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been unfrozen!</gradient>", "target", target.getName()));
+            target.sendMessage(FormattedMessage.create("freeze.unfrozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been unfrozen!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("freeze.unfrozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been unfrozen!</gradient>", "target", target.getName()));
         }
 
         return true;

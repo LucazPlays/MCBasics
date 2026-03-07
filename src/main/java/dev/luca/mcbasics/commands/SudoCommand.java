@@ -1,5 +1,6 @@
 package dev.luca.mcbasics.commands;
 
+import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Message;
 import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
@@ -14,28 +15,26 @@ import java.util.Arrays;
 
 public class SudoCommand implements CommandExecutor {
 
-    private static final String SUDO_PERMISSION = "mcbasics.sudo";
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission(SUDO_PERMISSION)) {
-            sender.sendMessage(Message.getComponent("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
+        if (!sender.hasPermission(Permission.SUDO)) {
+            sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(Message.getComponent("sudo.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /sudo <player> <command [args]></gradient>"));
+            sender.sendMessage(FormattedMessage.create("sudo.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /sudo <player> <command [args]></gradient>"));
             return true;
         }
 
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(Message.getComponent("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
 
         if (target.equals(sender)) {
-            sender.sendMessage(Message.getComponent("sudo.cant_sudo_self", "<gradient:#ff6b6b:#ee5a24>✖ You can't sudo yourself!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("sudo.cant_sudo_self", "<gradient:#ff6b6b:#ee5a24>✖ You can't sudo yourself!</gradient>"));
             return true;
         }
 
@@ -61,15 +60,15 @@ public class SudoCommand implements CommandExecutor {
                         : new String[0];
 
                     bukkitCommand.execute(target, commandName, commandArgs);
-                    sender.sendMessage(Message.getComponent("sudo.success", "<gradient:#48dbfb:#1dd1a1>✦ %target% executed: /%command%</gradient>", "target", target.getName(), "command", commandToRun));
+                    sender.sendMessage(FormattedMessage.create("sudo.success", "<gradient:#48dbfb:#1dd1a1>✦ %target% executed: /%command%</gradient>", "target", target.getName(), "command", commandToRun));
                 } else {
-                    sender.sendMessage(Message.getComponent("sudo.unknown_command", "<gradient:#ff6b6b:#ee5a24>✖ Unknown command: %command%</gradient>", "command", commandName));
+                    sender.sendMessage(FormattedMessage.create("sudo.unknown_command", "<gradient:#ff6b6b:#ee5a24>✖ Unknown command: %command%</gradient>", "command", commandName));
                 }
             } else {
-                sender.sendMessage(Message.getComponent("sudo.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to execute command!</gradient>"));
+                sender.sendMessage(FormattedMessage.create("sudo.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to execute command!</gradient>"));
             }
         } catch (Exception e) {
-            sender.sendMessage(Message.getComponent("sudo.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to execute command!</gradient>"));
+            sender.sendMessage(FormattedMessage.create("sudo.failed", "<gradient:#ff6b6b:#ee5a24>✖ Failed to execute command!</gradient>"));
         }
 
         return true;

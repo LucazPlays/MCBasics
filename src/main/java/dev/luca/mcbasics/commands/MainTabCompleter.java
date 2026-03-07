@@ -102,7 +102,7 @@ public class MainTabCompleter implements TabCompleter {
     }
 
     private List<String> flyTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1 && sender.hasPermission("essentials.fly.others")) {
+        if (args.length == 1 && sender.hasPermission("mcbasics.fly.others")) {
             return getOnlinePlayerNames();
         }
         return new ArrayList<>();

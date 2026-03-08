@@ -140,6 +140,8 @@ public final class MCBasics extends JavaPlugin {
         getCommand("setitemdamage").setTabCompleter(setItemDamageCommand);
 
         getCommand("oplist").setExecutor(opListCommand);
+
+        getCommand("list").setExecutor(new ListCommand());
     }
 
     public static MCBasics getInstance() {

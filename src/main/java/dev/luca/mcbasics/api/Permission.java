@@ -52,6 +52,8 @@ public final class Permission {
     public static final String CLEARITEMS = "mcbasics.clearitems";
     public static final String ITEMDAMAGE = "mcbasics.itemdamage";
     public static final String OPLIST = "mcbasics.oplist";
+    public static final String LIST = "mcbasics.list";
+    public static final String LIST_UUIDS = "mcbasics.list.uuids";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

@@ -106,6 +106,9 @@ commands:
   oplist:
     description: Open operator management GUI
     usage: /oplist
+  list:
+    description: List online players
+    usage: /list [uuids]
 
 permissions:
   mcbasics.*:
@@ -145,12 +148,13 @@ permissions:
       mcbasics.clearitems: true
       mcbasics.itemdamage: true
       mcbasics.oplist: true
+      mcbasics.list: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
       mcbasics.help: true
       mcbasics.item: true
-
+ 
   mcbasics.vanish:
     description: Allows use of /vanish
     default: op
@@ -273,4 +277,10 @@ permissions:
     default: op
   mcbasics.oplist:
     description: Allows use of /oplist
+    default: op
+  mcbasics.list:
+    description: Allows use of /list
+    default: true
+  mcbasics.list.uuids:
+    description: Allows using /list uuids
     default: op

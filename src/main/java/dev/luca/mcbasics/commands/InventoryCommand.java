@@ -121,60 +121,51 @@ public class InventoryCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
-        
+
         Player viewer = (Player) event.getWhoClicked();
         Player target = viewingPlayers.get(viewer.getUniqueId());
-        
+
         if (target == null) return;
-        
-        Inventory clickedInv = event.getClickedInventory();
-        if (clickedInv == null) return;
 
         Inventory viewInv = viewInventories.get(viewer.getUniqueId());
-        if (viewInv == null || clickedInv != viewInv) return;
+        if (viewInv == null || event.getView().getTopInventory() != viewInv) return;
 
-        int slot = event.getRawSlot();
-        
         Bukkit.getScheduler().runTaskLater(MCBasics.getInstance(), () -> {
-            syncSlotToTarget(viewInv, target, slot);
+            syncInventoryToTarget(viewInv, target);
         }, 1L);
     }
 
-    private void syncSlotToTarget(Inventory view, Player target, int slot) {
-        ItemStack item = view.getItem(slot);
+    private void syncInventoryToTarget(Inventory view, Player target) {
         PlayerInventory targetInv = target.getInventory();
-        
-        if (slot < 36) {
-            targetInv.setItem(slot, item);
-        } else if (slot == 36) {
-            targetInv.setHelmet(item);
-        } else if (slot == 37) {
-            targetInv.setChestplate(item);
-        } else if (slot == 38) {
-            targetInv.setLeggings(item);
-        } else if (slot == 39) {
-            targetInv.setBoots(item);
-        } else if (slot == 40) {
-            targetInv.setItemInOffHand(item);
+
+        for (int slot = 0; slot < 36; slot++) {
+            targetInv.setItem(slot, cloneItem(view.getItem(slot)));
         }
+
+        targetInv.setHelmet(cloneItem(view.getItem(36)));
+        targetInv.setChestplate(cloneItem(view.getItem(37)));
+        targetInv.setLeggings(cloneItem(view.getItem(38)));
+        targetInv.setBoots(cloneItem(view.getItem(39)));
+        targetInv.setItemInOffHand(cloneItem(view.getItem(40)));
     }
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
-        
+
         Player viewer = (Player) event.getWhoClicked();
         Player target = viewingPlayers.get(viewer.getUniqueId());
-        
+
         if (target == null) return;
-        
+
         Inventory viewInv = viewInventories.get(viewer.getUniqueId());
-        if (viewInv == null) return;
+        if (viewInv == null || event.getView().getTopInventory() != viewInv) return;
 
         Bukkit.getScheduler().runTaskLater(MCBasics.getInstance(), () -> {
             for (int slot : event.getRawSlots()) {
                 if (slot < 45) {
-                    syncSlotToTarget(viewInv, target, slot);
+                    syncInventoryToTarget(viewInv, target);
+                    break;
                 }
             }
         }, 1L);
@@ -183,8 +174,19 @@ public class InventoryCommand implements CommandExecutor, Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         if (!(event.getPlayer() instanceof Player)) return;
-        
+
         Player viewer = (Player) event.getPlayer();
+        Player target = viewingPlayers.get(viewer.getUniqueId());
+        Inventory viewInv = viewInventories.get(viewer.getUniqueId());
+
+        if (target != null && viewInv != null) {
+            syncInventoryToTarget(viewInv, target);
+        }
+
         cleanup(viewer);
+    }
+
+    private ItemStack cloneItem(ItemStack item) {
+        return item == null ? null : item.clone();
     }
 }

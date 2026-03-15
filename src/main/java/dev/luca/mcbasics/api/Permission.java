@@ -25,6 +25,8 @@ public final class Permission {
     public static final String HEAL_OTHERS = "mcbasics.heal.others";
     public static final String SPEED = "mcbasics.speed";
     public static final String SPEED_OTHERS = "mcbasics.speed.others";
+    public static final String FLYSPEED = "mcbasics.flyspeed";
+    public static final String FLYSPEED_OTHERS = "mcbasics.flyspeed.others";
     public static final String FLY = "mcbasics.fly";
     public static final String FLY_OTHERS = "mcbasics.fly.others";
     public static final String UNSAFEENCHANT = "mcbasics.unsafeenchant";

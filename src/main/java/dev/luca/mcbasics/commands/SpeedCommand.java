@@ -14,8 +14,10 @@ public class SpeedCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         boolean isFlying = label.equalsIgnoreCase("flyspeed");
-        
-        if (!sender.hasPermission(Permission.SPEED)) {
+        String basePermission = isFlying ? Permission.FLYSPEED : Permission.SPEED;
+        String othersPermission = isFlying ? Permission.FLYSPEED_OTHERS : Permission.SPEED_OTHERS;
+
+        if (!sender.hasPermission(basePermission)) {
             sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
             return true;
         }
@@ -37,7 +39,7 @@ public class SpeedCommand implements CommandExecutor {
         }
 
         if (args.length > 1 && args[1].equalsIgnoreCase("@a")) {
-            if (!sender.hasPermission(Permission.SPEED_OTHERS)) {
+            if (!sender.hasPermission(othersPermission)) {
                 sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
                 return true;
             }
@@ -66,7 +68,7 @@ public class SpeedCommand implements CommandExecutor {
 
         Player target;
 
-        if (args.length > 1 && sender.hasPermission(Permission.SPEED_OTHERS)) {
+        if (args.length > 1 && sender.hasPermission(othersPermission)) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
                 sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));

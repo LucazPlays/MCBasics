@@ -34,7 +34,8 @@ public class MainTabCompleter implements TabCompleter {
             case "heal":
                 return healTabComplete(sender, args);
             case "speed":
-                return speedTabComplete(sender, args);
+            case "flyspeed":
+                return speedTabComplete(sender, command, args);
             case "fly":
                 return flyTabComplete(sender, args);
             case "unsafeenchant":
@@ -55,7 +56,7 @@ public class MainTabCompleter implements TabCompleter {
     }
 
     private List<String> gmTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1 && sender.hasPermission("essentials.gm.others")) {
+        if (args.length == 1 && sender.hasPermission("mcbasics.gm.others")) {
             return getOnlinePlayerNames();
         }
         return new ArrayList<>();
@@ -76,26 +77,29 @@ public class MainTabCompleter implements TabCompleter {
     }
 
     private List<String> feedTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1 && sender.hasPermission("essentials.feed.others")) {
+        if (args.length == 1 && sender.hasPermission("mcbasics.feed.others")) {
             return getOnlinePlayerNames();
         }
         return new ArrayList<>();
     }
 
     private List<String> healTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1 && sender.hasPermission("essentials.heal.others")) {
+        if (args.length == 1 && sender.hasPermission("mcbasics.heal.others")) {
             return getOnlinePlayerNames();
         }
         return new ArrayList<>();
     }
 
-    private List<String> speedTabComplete(CommandSender sender, String[] args) {
+    private List<String> speedTabComplete(CommandSender sender, Command command, String[] args) {
+        String othersPermission = command.getName().equalsIgnoreCase("flyspeed")
+                ? "mcbasics.flyspeed.others"
+                : "mcbasics.speed.others";
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
             for (int i = 1; i <= 10; i++) {
                 completions.add(String.valueOf(i));
             }
-        } else if (args.length == 2 && sender.hasPermission("essentials.speed.others")) {
+        } else if (args.length == 2 && sender.hasPermission(othersPermission)) {
             completions = getOnlinePlayerNames();
         }
         return completions;

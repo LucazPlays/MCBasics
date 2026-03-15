@@ -187,19 +187,19 @@ permissions:
     default: op
   mcbasics.speed:
     description: Allows use of /speed
-    default: true
+    default: op
   mcbasics.speed.others:
     description: Allows changing other players' speed
     default: op
   mcbasics.flyspeed:
     description: Allows use of /flyspeed
-    default: true
+    default: op
   mcbasics.flyspeed.others:
     description: Allows changing other players' fly speed
     default: op
   mcbasics.fly:
     description: Allows use of /fly
-    default: true
+    default: op
   mcbasics.fly.others:
     description: Allows toggling flight for other players
     default: op

@@ -1,6 +1,5 @@
 package dev.luca.mcbasics.commands;
 
-import dev.luca.mcbasics.api.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -18,9 +17,7 @@ public class VanishManager {
     public static void hidePlayer(Player player) {
         vanishedPlayers.add(player);
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (!onlinePlayer.hasPermission(Permission.VANISH_SEE)) {
-                onlinePlayer.hidePlayer(player);
-            }
+            onlinePlayer.hidePlayer(player);
         }
         player.setCanPickupItems(false);
     }

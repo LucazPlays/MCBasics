@@ -57,6 +57,7 @@ public final class MCBasics extends JavaPlugin {
         ClearItemsCommand clearItemsCommand = new ClearItemsCommand();
         SetItemDamageCommand setItemDamageCommand = new SetItemDamageCommand();
         OpListCommand opListCommand = new OpListCommand();
+        RangePlaySoundCommand rangePlaySoundCommand = new RangePlaySoundCommand();
 
         getCommand("help").setExecutor(new HelpCommand());
         getCommand("help").setTabCompleter(new HelpCommand());
@@ -142,6 +143,9 @@ public final class MCBasics extends JavaPlugin {
         getCommand("oplist").setExecutor(opListCommand);
 
         getCommand("list").setExecutor(new ListCommand());
+
+        getCommand("rangeplaysound").setExecutor(rangePlaySoundCommand);
+        getCommand("rangeplaysound").setTabCompleter(rangePlaySoundCommand);
     }
 
     public static MCBasics getInstance() {

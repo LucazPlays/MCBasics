@@ -109,13 +109,15 @@ commands:
   list:
     description: List online players
     usage: /list [uuids]
+  rangeplaysound:
+    description: Play a sound for players in a radius
+    usage: /rangeplaysound <range> <sound> <x> <y> <z>
 
 permissions:
   mcbasics.*:
     description: All MCBasics permissions
     children:
       mcbasics.vanish: true
-      mcbasics.vanish.see: true
       mcbasics.gm: true
       mcbasics.invsee: true
       mcbasics.tphere: true
@@ -149,6 +151,7 @@ permissions:
       mcbasics.itemdamage: true
       mcbasics.oplist: true
       mcbasics.list: true
+      mcbasics.rangeplaysound: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -157,9 +160,6 @@ permissions:
  
   mcbasics.vanish:
     description: Allows use of /vanish
-    default: op
-  mcbasics.vanish.see:
-    description: Allows seeing vanished players
     default: op
   mcbasics.gm:
     description: Allows use of /gm
@@ -277,6 +277,9 @@ permissions:
     default: op
   mcbasics.oplist:
     description: Allows use of /oplist
+    default: op
+  mcbasics.rangeplaysound:
+    description: Allows use of /rangeplaysound
     default: op
   mcbasics.list:
     description: Allows use of /list

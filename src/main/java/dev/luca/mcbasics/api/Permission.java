@@ -6,7 +6,6 @@ public final class Permission {
 
     // Vanish permissions
     public static final String VANISH = "mcbasics.vanish";
-    public static final String VANISH_SEE = "mcbasics.vanish.see";
 
     // Gamemode permissions
     public static final String GM = "mcbasics.gm";
@@ -56,6 +55,7 @@ public final class Permission {
     public static final String OPLIST = "mcbasics.oplist";
     public static final String LIST = "mcbasics.list";
     public static final String LIST_UUIDS = "mcbasics.list.uuids";
+    public static final String RANGEPLAYSOUND = "mcbasics.rangeplaysound";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

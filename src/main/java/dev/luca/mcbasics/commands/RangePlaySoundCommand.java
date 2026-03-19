@@ -67,7 +67,7 @@ public class RangePlaySoundCommand implements CommandExecutor, TabCompleter {
 
         for (Player target : player.getWorld().getPlayers()) {
             if (target.getLocation().distanceSquared(location) <= rangeSquared) {
-                target.playSound(location, sound, 1.0f, 1.0f);
+                target.playSound(target.getLocation(), sound, 1.0f, 1.0f);
                 count++;
             }
         }

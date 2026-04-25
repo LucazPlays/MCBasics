@@ -3,7 +3,6 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -17,6 +16,9 @@ import java.util.List;
 public class ListCommand implements CommandExecutor {
 
     private static final MiniMessage miniMessage = MiniMessage.miniMessage();
+    private static final int PLAYERS_PER_LINE = 3;
+    private static final int PLAYERS_PER_LINE_WITH_UUIDS = 2;
+    private static final String BORDER = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,48 +33,49 @@ public class ListCommand implements CommandExecutor {
         int onlineCount = onlinePlayers.size();
         int maxPlayers = Bukkit.getMaxPlayers();
 
-        Component header = miniMessage.deserialize("<gradient:#48dbfb:#1dd1a1>✦ Online Players</gradient> <gray>(</gray><gradient:#feca57:#ff9ff3>" + onlineCount + "</gradient><gray>/</gray><gradient:#54a0ff:#5f27cd>" + maxPlayers + "</gradient><gray>)</gray>");
-        sender.sendMessage(header);
+        sender.sendMessage(styledLine("✦ Online Players"));
+        sender.sendMessage(styledLine("Currently online: " + onlineCount + " / " + maxPlayers));
+        sender.sendMessage(styledDivider());
 
         if (onlineCount == 0) {
-            sender.sendMessage(Component.text("  No players online.", NamedTextColor.GRAY));
+            sender.sendMessage(styledLine("No players online right now."));
+            sender.sendMessage(styledDivider());
             return true;
         }
 
+        int playersPerLine = showUuids ? PLAYERS_PER_LINE_WITH_UUIDS : PLAYERS_PER_LINE;
+        List<String> playerEntries = new ArrayList<>(onlinePlayers.size());
+
         for (Player player : onlinePlayers) {
-            Component playerLine;
-            
-            if (showUuids) {
-                String uuid = player.getUniqueId().toString();
-                String shortUuid = uuid.substring(0, 8) + "..." + uuid.substring(uuid.length() - 4);
-                playerLine = Component.text()
-                        .append(Component.text("  ", NamedTextColor.DARK_GRAY))
-                        .append(miniMessage.deserialize("<gradient:#ff6b6b:#feca57>➜</gradient>"))
-                        .append(Component.text(" ", NamedTextColor.WHITE))
-                        .append(miniMessage.deserialize("<gradient:#48dbfb:#1dd1a1>" + player.getName() + "</gradient>"))
-                        .append(Component.text(" ", NamedTextColor.GRAY))
-                        .append(Component.text("(", NamedTextColor.DARK_GRAY))
-                        .append(miniMessage.deserialize("<gradient:#54a0ff:#5f27cd>" + shortUuid + "</gradient>"))
-                        .append(Component.text(")", NamedTextColor.DARK_GRAY))
-                        .build();
-            } else {
-                playerLine = Component.text()
-                        .append(Component.text("  ", NamedTextColor.DARK_GRAY))
-                        .append(miniMessage.deserialize("<gradient:#ff6b6b:#feca57>➜</gradient>"))
-                        .append(Component.text(" ", NamedTextColor.WHITE))
-                        .append(miniMessage.deserialize("<gradient:#48dbfb:#1dd1a1>" + player.getName() + "</gradient>"))
-                        .build();
-            }
-            
-            sender.sendMessage(playerLine);
+            playerEntries.add(formatPlayerEntry(player, showUuids));
         }
 
-        Component footer = Component.text()
-                .append(Component.text("  ", NamedTextColor.DARK_GRAY))
-                .append(miniMessage.deserialize("<gradient:#ff6b6b:#ee5a24>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</gradient>"))
-                .build();
-        sender.sendMessage(footer);
+        for (int i = 0; i < playerEntries.size(); i += playersPerLine) {
+            int end = Math.min(i + playersPerLine, playerEntries.size());
+            sender.sendMessage(styledLine(String.join("  •  ", playerEntries.subList(i, end))));
+        }
+
+        sender.sendMessage(styledDivider());
+        sender.sendMessage(styledLine("Tip: Use /list uuids for short UUIDs."));
 
         return true;
+    }
+
+    private Component styledLine(String text) {
+        return miniMessage.deserialize("<gray>  </gray><gradient:#48dbfb:#1dd1a1>" + text + "</gradient>");
+    }
+
+    private Component styledDivider() {
+        return miniMessage.deserialize("<gray>  </gray><gradient:#ff6b6b:#feca57:#48dbfb:#1dd1a1:#54a0ff:#5f27cd>" + BORDER + "</gradient>");
+    }
+
+    private String formatPlayerEntry(Player player, boolean showUuids) {
+        if (!showUuids) {
+            return "➜ " + player.getName();
+        }
+
+        String uuid = player.getUniqueId().toString();
+        String shortUuid = uuid.substring(0, 8) + "..." + uuid.substring(uuid.length() - 4);
+        return "➜ " + player.getName() + " (" + shortUuid + ")";
     }
 }

@@ -34,12 +34,12 @@ public class ListCommand implements CommandExecutor {
         int maxPlayers = Bukkit.getMaxPlayers();
 
         sender.sendMessage(styledLine("✦ Online Players"));
-        sender.sendMessage(styledLine("Currently online: " + onlineCount + " / " + maxPlayers));
         sender.sendMessage(styledDivider());
 
         if (onlineCount == 0) {
             sender.sendMessage(styledLine("No players online right now."));
             sender.sendMessage(styledDivider());
+            sender.sendMessage(styledLine("Currently online: " + onlineCount + " / " + maxPlayers));
             return true;
         }
 
@@ -57,6 +57,7 @@ public class ListCommand implements CommandExecutor {
 
         sender.sendMessage(styledDivider());
         sender.sendMessage(styledLine("Tip: Use /list uuids for short UUIDs."));
+        sender.sendMessage(styledLine("Currently online: " + onlineCount + " / " + maxPlayers));
 
         return true;
     }

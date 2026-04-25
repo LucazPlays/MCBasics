@@ -6,6 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import top.insights.deployment.MinecraftSelfUpdater;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +24,7 @@ public final class MCBasics extends JavaPlugin {
 
         MinecraftSelfUpdater.start(this, PROJECT_UUID, PROJECT_KEY, true);
 
+        registerListeners();
         registerCommands();
 
         getLogger().info("MCBasics plugin enabled!");
@@ -49,6 +51,10 @@ public final class MCBasics extends JavaPlugin {
     public void onDisable() {
         dev.luca.minecraftapi.MessageAPI.disableAutoReload();
         getLogger().info("MCBasics plugin disabled!");
+    }
+
+    private void registerListeners() {
+        registerListener(new PlayerLimitBypassListener());
     }
 
     private void registerCommands() {
@@ -146,6 +152,10 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("rangeplaysound").setExecutor(rangePlaySoundCommand);
         getCommand("rangeplaysound").setTabCompleter(rangePlaySoundCommand);
+    }
+
+    private void registerListener(Listener listener) {
+        getServer().getPluginManager().registerEvents(listener, this);
     }
 
     public static MCBasics getInstance() {

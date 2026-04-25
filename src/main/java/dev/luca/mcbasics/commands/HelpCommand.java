@@ -37,7 +37,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("setitemdamage <damage>", "Set exact item damage", Permission.ITEMDAMAGE),
             new CommandInfo("clearitems [radius]", "Clear dropped items nearby", Permission.CLEARITEMS),
             new CommandInfo("oplist", "Manage operators in GUI", Permission.OPLIST),
-            new CommandInfo("rangeplaysound <r> <sound> <x> <y> <z> [world]", "Play sound in radius", Permission.RANGEPLAYSOUND),
+            new CommandInfo("rangeplaysound <r> <sound> <x> <y> <z>", "Play sound in radius", Permission.RANGEPLAYSOUND),
             new CommandInfo("skull [p]", "Get player skull", Permission.SKULL),
             new CommandInfo("hat", "Wear held item", Permission.HAT),
             new CommandInfo("unsafeenchant <ench> <lvl>", "Add unsafe enchant", Permission.UNSAFEENCHANT),

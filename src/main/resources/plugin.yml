@@ -111,7 +111,7 @@ commands:
     usage: /list [uuids]
   rangeplaysound:
     description: Play a sound for players in a radius
-    usage: /rangeplaysound <range> <sound> <x> <y> <z> [world]
+    usage: /rangeplaysound <range> <sound> <x> <y> <z>
 
 permissions:
   mcbasics.*:
@@ -152,6 +152,7 @@ permissions:
       mcbasics.oplist: true
       mcbasics.list: true
       mcbasics.rangeplaysound: true
+      mcbasics.bypassplayerlimit: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -280,6 +281,9 @@ permissions:
     default: op
   mcbasics.rangeplaysound:
     description: Allows use of /rangeplaysound
+    default: op
+  mcbasics.bypassplayerlimit:
+    description: Allows bypassing the server player limit on join
     default: op
   mcbasics.list:
     description: Allows use of /list

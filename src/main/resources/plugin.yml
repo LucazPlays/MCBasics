@@ -111,7 +111,7 @@ commands:
     usage: /list [uuids]
   rangeplaysound:
     description: Play a sound for players in a radius
-    usage: /rangeplaysound <range> <sound> <x> <y> <z>
+    usage: /rangeplaysound <range> <sound> <x> <y> <z> [world]
 
 permissions:
   mcbasics.*:

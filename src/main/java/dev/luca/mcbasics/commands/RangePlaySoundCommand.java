@@ -2,8 +2,10 @@ package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,13 +26,9 @@ public class RangePlaySoundCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));
-            return true;
-        }
-
-        if (args.length != 5) {
-            sender.sendMessage(FormattedMessage.create("rangeplaysound.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /rangeplaysound <range> <sound> <x> <y> <z></gradient>"));
+        boolean isPlayer = sender instanceof Player;
+        if ((isPlayer && args.length != 5 && args.length != 6) || (!isPlayer && args.length != 6)) {
+            sender.sendMessage(FormattedMessage.create("rangeplaysound.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /rangeplaysound <range> <sound> <x> <y> <z> [world]</gradient>"));
             return true;
         }
 
@@ -60,12 +58,25 @@ public class RangePlaySoundCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Player player = (Player) sender;
-        Location location = new Location(player.getWorld(), x, y, z);
+        World world;
+        if (args.length == 6) {
+            world = Bukkit.getWorld(args[5]);
+            if (world == null) {
+                sender.sendMessage(FormattedMessage.create("rangeplaysound.invalid_world", "<gradient:#ff6b6b:#ee5a24>✖ World not found!</gradient>"));
+                return true;
+            }
+        } else if (sender instanceof Player player) {
+            world = player.getWorld();
+        } else {
+            sender.sendMessage(FormattedMessage.create("rangeplaysound.world_required", "<gradient:#ff6b6b:#ee5a24>✖ Console must specify a world!</gradient>"));
+            return true;
+        }
+
+        Location location = new Location(world, x, y, z);
         double rangeSquared = range * range;
         int count = 0;
 
-        for (Player target : player.getWorld().getPlayers()) {
+        for (Player target : world.getPlayers()) {
             if (target.getLocation().distanceSquared(location) <= rangeSquared) {
                 target.playSound(target.getLocation(), sound, 1.0f, 1.0f);
                 count++;
@@ -74,10 +85,11 @@ public class RangePlaySoundCommand implements CommandExecutor, TabCompleter {
 
         sender.sendMessage(FormattedMessage.create(
                 "rangeplaysound.success",
-                "<gradient:#48dbfb:#1dd1a1>✦ Played %sound% for %count% player(s) in a range of %range% blocks!</gradient>",
+                "<gradient:#48dbfb:#1dd1a1>✦ Played %sound% for %count% player(s) in a range of %range% blocks in %world%!</gradient>",
                 "sound", sound.getKey().getKey(),
                 "count", String.valueOf(count),
-                "range", formatNumber(range)
+                "range", formatNumber(range),
+                "world", world.getName()
         ));
         return true;
     }
@@ -138,6 +150,14 @@ public class RangePlaySoundCommand implements CommandExecutor, TabCompleter {
             }
             completions.add(suggestion);
             return filter(completions, args[args.length - 1]);
+        }
+
+        if (args.length == 6) {
+            List<String> worlds = new ArrayList<>();
+            for (World world : Bukkit.getWorlds()) {
+                worlds.add(world.getName());
+            }
+            return filter(worlds, args[5]);
         }
 
         return completions;

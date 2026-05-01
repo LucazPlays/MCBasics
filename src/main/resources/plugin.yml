@@ -209,7 +209,7 @@ permissions:
     default: op
   mcbasics.enchant:
     description: Allows use of /enchant
-    default: true
+    default: op
   mcbasics.enderchest:
     description: Allows use of /enderchest
     default: true

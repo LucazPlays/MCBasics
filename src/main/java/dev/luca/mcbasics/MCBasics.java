@@ -22,7 +22,7 @@ public final class MCBasics extends JavaPlugin {
         instance = this;
         Message.init(this);
 
-        MinecraftSelfUpdater.start(this, PROJECT_UUID, PROJECT_KEY, true, true);
+        MinecraftSelfUpdater.start(this, PROJECT_UUID, PROJECT_KEY, true);
 
         registerListeners();
         registerCommands();

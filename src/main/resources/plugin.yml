@@ -245,7 +245,7 @@ permissions:
     default: op
   mcbasics.help:
     description: Allows use of /help
-    default: true
+    default: op
   mcbasics.item:
     description: Allows use of /i
     default: true

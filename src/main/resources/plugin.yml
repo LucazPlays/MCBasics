@@ -233,7 +233,7 @@ permissions:
     default: op
   mcbasics.god:
     description: Allows use of /god
-    default: true
+    default: op
   mcbasics.god.others:
     description: Allows toggling god mode for other players
     default: op

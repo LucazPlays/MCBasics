@@ -248,7 +248,7 @@ permissions:
     default: op
   mcbasics.item:
     description: Allows use of /i
-    default: true
+    default: op
   mcbasics.freeze:
     description: Allows use of /freeze
     default: op

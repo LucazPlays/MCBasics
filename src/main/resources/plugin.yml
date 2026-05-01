@@ -260,7 +260,7 @@ permissions:
     default: op
   mcbasics.skull:
     description: Allows use of /skull
-    default: true
+    default: op
   mcbasics.repair:
     description: Allows use of /repair
     default: true

@@ -257,7 +257,7 @@ permissions:
     default: op
   mcbasics.hat:
     description: Allows use of /hat
-    default: true
+    default: op
   mcbasics.skull:
     description: Allows use of /skull
     default: true

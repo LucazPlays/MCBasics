@@ -263,7 +263,7 @@ permissions:
     default: op
   mcbasics.repair:
     description: Allows use of /repair
-    default: true
+    default: op
   mcbasics.day:
     description: Allows use of /day
     default: op

@@ -218,7 +218,7 @@ permissions:
     default: op
   mcbasics.setdisplayname:
     description: Allows use of /setdisplayname
-    default: true
+    default: op
   mcbasics.setlore:
     description: Allows use of /setlore
     default: true

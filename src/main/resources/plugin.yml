@@ -176,7 +176,7 @@ permissions:
     default: op
   mcbasics.feed:
     description: Allows use of /feed
-    default: true
+    default: op
   mcbasics.feed.others:
     description: Allows feeding other players
     default: op

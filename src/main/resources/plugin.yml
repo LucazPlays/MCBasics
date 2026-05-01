@@ -227,7 +227,7 @@ permissions:
     default: op
   mcbasics.ping:
     description: Allows use of /ping
-    default: true
+    default: op
   mcbasics.ping.others:
     description: Allows checking other players' ping
     default: op

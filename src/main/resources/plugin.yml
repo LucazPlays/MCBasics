@@ -242,7 +242,7 @@ permissions:
     default: op
   mcbasics.anvil:
     description: Allows use of /anvil
-    default: true
+    default: op
   mcbasics.help:
     description: Allows use of /help
     default: true

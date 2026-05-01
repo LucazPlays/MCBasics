@@ -239,7 +239,7 @@ permissions:
     default: op
   mcbasics.craft:
     description: Allows use of /craft
-    default: true
+    default: op
   mcbasics.anvil:
     description: Allows use of /anvil
     default: true

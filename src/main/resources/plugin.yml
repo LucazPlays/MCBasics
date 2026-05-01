@@ -221,7 +221,7 @@ permissions:
     default: op
   mcbasics.setlore:
     description: Allows use of /setlore
-    default: true
+    default: op
   mcbasics.sudo:
     description: Allows use of /sudo
     default: op

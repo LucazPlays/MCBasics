@@ -212,7 +212,7 @@ permissions:
     default: op
   mcbasics.enderchest:
     description: Allows use of /enderchest
-    default: true
+    default: op
   mcbasics.enderchest.others:
     description: Allows opening other players' enderchests
     default: op

@@ -287,7 +287,7 @@ permissions:
     default: op
   mcbasics.list:
     description: Allows use of /list
-    default: true
+    default: op
   mcbasics.list.uuids:
     description: Allows using /list uuids
     default: op

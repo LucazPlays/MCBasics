@@ -3,7 +3,7 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.MCBasics;
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
-import org.bukkit.Bukkit;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,7 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,20 +38,31 @@ public class FreezeCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
+        List<Player> targets = TargetSelector.selectPlayers(sender, args[0]);
+        if (targets.isEmpty()) {
             sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
 
-        boolean isFrozen = toggleFreeze(target);
+        for (Player target : targets) {
+            boolean isFrozen = toggleFreeze(target);
 
-        if (isFrozen) {
-            target.sendMessage(FormattedMessage.create("freeze.frozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been frozen!</gradient>"));
-            sender.sendMessage(FormattedMessage.create("freeze.frozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been frozen!</gradient>", "target", target.getName()));
+            if (isFrozen) {
+                target.sendMessage(FormattedMessage.create("freeze.frozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been frozen!</gradient>"));
+            } else {
+                target.sendMessage(FormattedMessage.create("freeze.unfrozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been unfrozen!</gradient>"));
+            }
+        }
+
+        if (targets.size() > 1) {
+            sender.sendMessage(FormattedMessage.create("freeze.toggled_all", "<gradient:#48dbfb:#1dd1a1>✦ Freeze toggled for %count% players!</gradient>", "count", String.valueOf(targets.size())));
         } else {
-            target.sendMessage(FormattedMessage.create("freeze.unfrozen", "<gradient:#48dbfb:#1dd1a1>✦ You have been unfrozen!</gradient>"));
-            sender.sendMessage(FormattedMessage.create("freeze.unfrozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been unfrozen!</gradient>", "target", target.getName()));
+            Player target = targets.get(0);
+            if (isFrozen(target)) {
+                sender.sendMessage(FormattedMessage.create("freeze.frozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been frozen!</gradient>", "target", target.getName()));
+            } else {
+                sender.sendMessage(FormattedMessage.create("freeze.unfrozen_other", "<gradient:#48dbfb:#1dd1a1>✦ %target% has been unfrozen!</gradient>", "target", target.getName()));
+            }
         }
 
         return true;

@@ -2,11 +2,14 @@ package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
-import org.bukkit.Bukkit;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Collections;
+import java.util.List;
 
 public class FlyCommand implements CommandExecutor {
 
@@ -17,57 +20,44 @@ public class FlyCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length > 0 && args[0].equalsIgnoreCase("@a")) {
+        List<Player> targets;
+
+        if (args.length > 0) {
             if (!sender.hasPermission(Permission.FLY_OTHERS)) {
                 sender.sendMessage(FormattedMessage.create("general.no_permission", "<gradient:#ff6b6b:#ee5a24>✖ You don't have permission!</gradient>"));
                 return true;
             }
-
-            int count = 0;
-            for (Player target : Bukkit.getOnlinePlayers()) {
-                boolean newFlyState = !target.getAllowFlight();
-                target.setAllowFlight(newFlyState);
-                target.setFlying(newFlyState);
-
-                if (newFlyState) {
-                    target.sendMessage(FormattedMessage.create("fly.enabled", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled!</gradient>"));
-                } else {
-                    target.sendMessage(FormattedMessage.create("fly.disabled", "<gradient:#ff6b6b:#ee5a24>✦ Flight disabled!</gradient>"));
-                }
-                count++;
-            }
-            sender.sendMessage(FormattedMessage.create("fly.toggled_all", "<gradient:#48dbfb:#1dd1a1>✦ Flight toggled for %count% players!</gradient>", "count", String.valueOf(count)));
-            return true;
-        }
-
-        Player target;
-
-        if (args.length > 0 && sender.hasPermission(Permission.FLY_OTHERS)) {
-            target = Bukkit.getPlayer(args[0]);
-            if (target == null) {
+            targets = TargetSelector.selectPlayers(sender, args[0]);
+            if (targets.isEmpty()) {
                 sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
         } else if (sender instanceof Player) {
-            target = (Player) sender;
+            targets = Collections.singletonList((Player) sender);
         } else {
             sender.sendMessage(FormattedMessage.create("general.specify_player", "<gradient:#ff6b6b:#ee5a24>✖ Specify a player!</gradient>"));
             return true;
         }
 
-        boolean newFlyState = !target.getAllowFlight();
+        for (Player target : targets) {
+            boolean newFlyState = !target.getAllowFlight();
+            target.setAllowFlight(newFlyState);
+            target.setFlying(newFlyState);
 
-        target.setAllowFlight(newFlyState);
-        target.setFlying(newFlyState);
-
-        if (newFlyState) {
-            target.sendMessage(FormattedMessage.create("fly.enabled", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled!</gradient>"));
-            if (target != sender) {
-                sender.sendMessage(FormattedMessage.create("fly.enabled_other", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled for %target%!</gradient>", "target", target.getName()));
+            if (newFlyState) {
+                target.sendMessage(FormattedMessage.create("fly.enabled", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled!</gradient>"));
+            } else {
+                target.sendMessage(FormattedMessage.create("fly.disabled", "<gradient:#ff6b6b:#ee5a24>✦ Flight disabled!</gradient>"));
             }
-        } else {
-            target.sendMessage(FormattedMessage.create("fly.disabled", "<gradient:#ff6b6b:#ee5a24>✦ Flight disabled!</gradient>"));
-            if (target != sender) {
+        }
+
+        if (targets.size() > 1) {
+            sender.sendMessage(FormattedMessage.create("fly.toggled_all", "<gradient:#48dbfb:#1dd1a1>✦ Flight toggled for %count% players!</gradient>", "count", String.valueOf(targets.size())));
+        } else if (targets.get(0) != sender) {
+            Player target = targets.get(0);
+            if (target.getAllowFlight()) {
+                sender.sendMessage(FormattedMessage.create("fly.enabled_other", "<gradient:#48dbfb:#1dd1a1>✦ Flight enabled for %target%!</gradient>", "target", target.getName()));
+            } else {
                 sender.sendMessage(FormattedMessage.create("fly.disabled_other", "<gradient:#ff6b6b:#ee5a24>✦ Flight disabled for %target%!</gradient>", "target", target.getName()));
             }
         }

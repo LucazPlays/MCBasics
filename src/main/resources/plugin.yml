@@ -112,6 +112,9 @@ commands:
   rangeplaysound:
     description: Play a sound for players in a radius
     usage: /rangeplaysound <range> <sound> <x> <y> <z> [world]
+  playertransfer:
+    description: Transfer a player to another server (supports @p @a etc.)
+    usage: /playertransfer <player> <ip> <port>
 
 permissions:
   mcbasics.*:
@@ -153,6 +156,7 @@ permissions:
       mcbasics.list: true
       mcbasics.rangeplaysound: true
       mcbasics.bypassplayerlimit: true
+      mcbasics.playertransfer: true
       mcbasics.ping: true
       mcbasics.craft: true
       mcbasics.anvil: true
@@ -290,4 +294,7 @@ permissions:
     default: op
   mcbasics.list.uuids:
     description: Allows using /list uuids
+    default: op
+  mcbasics.playertransfer:
+    description: Allows use of /playertransfer
     default: op

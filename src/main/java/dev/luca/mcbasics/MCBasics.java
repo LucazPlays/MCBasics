@@ -152,6 +152,9 @@ public final class MCBasics extends JavaPlugin {
 
         getCommand("rangeplaysound").setExecutor(rangePlaySoundCommand);
         getCommand("rangeplaysound").setTabCompleter(rangePlaySoundCommand);
+
+        getCommand("playertransfer").setExecutor(new PlayerTransferCommand());
+        getCommand("playertransfer").setTabCompleter(tabCompleter);
     }
 
     private void registerListener(Listener listener) {

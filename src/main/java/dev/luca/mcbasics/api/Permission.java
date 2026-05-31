@@ -57,6 +57,7 @@ public final class Permission {
     public static final String LIST_UUIDS = "mcbasics.list.uuids";
     public static final String RANGEPLAYSOUND = "mcbasics.rangeplaysound";
     public static final String BYPASS_PLAYER_LIMIT = "mcbasics.bypassplayerlimit";
+    public static final String PLAYERTRANSFER = "mcbasics.playertransfer";
 
     // Wildcard permission
     public static final String ALL = "mcbasics.*";

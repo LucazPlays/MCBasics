@@ -40,6 +40,8 @@ public class MainTabCompleter implements TabCompleter {
                 return flyTabComplete(sender, args);
             case "unsafeenchant":
                 return unsafeEnchantTabComplete(args);
+            case "playertransfer":
+                return playerTransferTabComplete(args);
             default:
                 return new ArrayList<>();
         }
@@ -125,6 +127,15 @@ public class MainTabCompleter implements TabCompleter {
             return Arrays.asList("1", "5", "10", "50", "100", "32767");
         } else if (args.length == 3) {
             return getOnlinePlayerNames();
+        }
+        return new ArrayList<>();
+    }
+
+    private List<String> playerTransferTabComplete(String[] args) {
+        if (args.length == 1) {
+            return getOnlinePlayerNames();
+        } else if (args.length == 3) {
+            return Arrays.asList("25565", "19132", "25575", "25566");
         }
         return new ArrayList<>();
     }

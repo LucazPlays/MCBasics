@@ -13,9 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
@@ -126,8 +124,6 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        Set<String> completions = new LinkedHashSet<>();
-
         if (!sender.hasPermission(Permission.GM)) {
             return new ArrayList<>();
         }
@@ -144,12 +140,13 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
 
         if (fixedModeAlias) {
             if (args.length == 1 && sender.hasPermission(Permission.GM_OTHERS)) {
-                addPlayerCompletions(completions, args[0]);
+                return TargetSelector.getPlayerTabCompletions(args[0]);
             }
-            return new ArrayList<>(completions);
+            return new ArrayList<>();
         }
 
         if (args.length == 1) {
+            List<String> completions = new ArrayList<>();
             String partial = args[0].toLowerCase();
 
             if ("survival".startsWith(partial) || "s".startsWith(partial)) completions.add("survival");
@@ -158,26 +155,13 @@ public class GamemodeCommand implements CommandExecutor, TabCompleter {
             if ("spectator".startsWith(partial) || "sp".startsWith(partial)) completions.add("spectator");
 
             if (sender.hasPermission(Permission.GM_OTHERS)) {
-                addPlayerCompletions(completions, args[0]);
+                completions.addAll(TargetSelector.getPlayerTabCompletions(args[0]));
             }
+            return completions;
         } else if (args.length == 2 && sender.hasPermission(Permission.GM_OTHERS)) {
-            addPlayerCompletions(completions, args[1]);
+            return TargetSelector.getPlayerTabCompletions(args[1]);
         }
 
-        return new ArrayList<>(completions);
-    }
-
-    private void addPlayerCompletions(Set<String> completions, String input) {
-        String partial = input.toLowerCase();
-        if ("@a".startsWith(partial)) completions.add("@a");
-        if ("@p".startsWith(partial)) completions.add("@p");
-        if ("@r".startsWith(partial)) completions.add("@r");
-        if ("@s".startsWith(partial)) completions.add("@s");
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.getName().toLowerCase().startsWith(partial)) {
-                completions.add(player.getName());
-            }
-        }
+        return new ArrayList<>();
     }
 }

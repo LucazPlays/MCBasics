@@ -110,10 +110,7 @@ public final class MCBasics extends JavaPlugin {
         getCommand("ec").setTabCompleter(new EnderchestCommand());
 
         getCommand("setdisplayname").setExecutor(new SetDisplayNameCommand());
-        getCommand("setdisplayname").setTabCompleter(tabCompleter);
-
         getCommand("setlore").setExecutor(new SetLoreCommand());
-        getCommand("setlore").setTabCompleter(tabCompleter);
 
         getCommand("sudo").setExecutor(new SudoCommand());
         getCommand("sudo").setTabCompleter(tabCompleter);
@@ -121,15 +118,20 @@ public final class MCBasics extends JavaPlugin {
         getCommand("ping").setExecutor(new PingCommand());
         getCommand("ping").setTabCompleter(tabCompleter);
 
-        getCommand("god").setExecutor(new GodCommand());
+        GodCommand godCommand = new GodCommand();
+        getCommand("god").setExecutor(godCommand);
+        getCommand("god").setTabCompleter(tabCompleter);
 
-        getCommand("freeze").setExecutor(new FreezeCommand());
+        FreezeCommand freezeCommand = new FreezeCommand();
+        getCommand("freeze").setExecutor(freezeCommand);
+        getCommand("freeze").setTabCompleter(tabCompleter);
 
         getCommand("broadcast").setExecutor(new BroadcastCommand());
 
         getCommand("hat").setExecutor(new HatCommand());
 
         getCommand("skull").setExecutor(new SkullCommand());
+        getCommand("skull").setTabCompleter(tabCompleter);
 
         getCommand("repair").setExecutor(new RepairCommand());
 

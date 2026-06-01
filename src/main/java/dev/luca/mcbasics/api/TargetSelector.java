@@ -7,7 +7,9 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TargetSelector {
@@ -41,5 +43,42 @@ public class TargetSelector {
         }
 
         return Collections.emptyList();
+    }
+
+    /**
+     * Returns tab completion suggestions for a player target argument.
+     * Includes online player names (filtered by prefix) and vanilla selectors (@a, @p, @r, @s).
+     *
+     * @param partial The current partial input (may be empty)
+     * @return Filtered list of suggestions
+     */
+    public static List<String> getPlayerTabCompletions(String partial) {
+        return getPlayerTabCompletions(partial, true);
+    }
+
+    /**
+     * Returns tab completion suggestions for a player target argument.
+     *
+     * @param partial          The current partial input (may be empty)
+     * @param includeSelectors Whether to include @a, @p, @r, @s selectors
+     * @return Filtered list of suggestions
+     */
+    public static List<String> getPlayerTabCompletions(String partial, boolean includeSelectors) {
+        Set<String> completions = new LinkedHashSet<>();
+        String p = (partial == null ? "" : partial).toLowerCase();
+
+        if (includeSelectors) {
+            if ("@a".startsWith(p)) completions.add("@a");
+            if ("@p".startsWith(p)) completions.add("@p");
+            if ("@r".startsWith(p)) completions.add("@r");
+            if ("@s".startsWith(p)) completions.add("@s");
+        }
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.getName().toLowerCase().startsWith(p)) {
+                completions.add(player.getName());
+            }
+        }
+        return new ArrayList<>(completions);
     }
 }

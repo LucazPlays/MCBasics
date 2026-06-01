@@ -3,6 +3,7 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.MCBasics;
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -44,11 +45,12 @@ public class InventoryCommand implements CommandExecutor, Listener {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
+        java.util.List<Player> targets = TargetSelector.selectPlayers(sender, args[0]);
+        if (targets.isEmpty()) {
             sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
+        Player target = targets.get(0);
 
         if (!(sender instanceof Player)) {
             sender.sendMessage(FormattedMessage.create("general.must_be_player", "<gradient:#ff6b6b:#ee5a24>✖ This command can only be used by players!</gradient>"));

@@ -1,10 +1,9 @@
 package dev.luca.mcbasics.commands;
 
-import org.bukkit.Bukkit;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +41,14 @@ public class MainTabCompleter implements TabCompleter {
                 return unsafeEnchantTabComplete(args);
             case "playertransfer":
                 return playerTransferTabComplete(args);
+            case "sudo":
+            case "skull":
+            case "freeze":
+                return playerOnlyTargetTabComplete(args, 0);
+            case "ping":
+                return playerTargetTabComplete(sender, args, 0, "mcbasics.ping.others");
+            case "god":
+                return playerTargetTabComplete(sender, args, 0, "mcbasics.god.others");
             default:
                 return new ArrayList<>();
         }
@@ -52,42 +59,43 @@ public class MainTabCompleter implements TabCompleter {
             return Arrays.asList("list", "on", "off", "toggle");
         }
         if (args.length == 2) {
-            return getOnlinePlayerNames();
+            // vanish [sub] <player>
+            return TargetSelector.getPlayerTabCompletions(args[1]);
         }
         return new ArrayList<>();
     }
 
     private List<String> gmTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && sender.hasPermission("mcbasics.gm.others")) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
 
     private List<String> invseeTabComplete(String[] args) {
         if (args.length == 1) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
 
     private List<String> tphereTabComplete(String[] args) {
         if (args.length == 1) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
 
     private List<String> feedTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && sender.hasPermission("mcbasics.feed.others")) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
 
     private List<String> healTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && sender.hasPermission("mcbasics.heal.others")) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
@@ -102,14 +110,14 @@ public class MainTabCompleter implements TabCompleter {
                 completions.add(String.valueOf(i));
             }
         } else if (args.length == 2 && sender.hasPermission(othersPermission)) {
-            completions = getOnlinePlayerNames();
+            completions = TargetSelector.getPlayerTabCompletions(args[1]);
         }
         return completions;
     }
 
     private List<String> flyTabComplete(CommandSender sender, String[] args) {
         if (args.length == 1 && sender.hasPermission("mcbasics.fly.others")) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
         return new ArrayList<>();
     }
@@ -126,25 +134,41 @@ public class MainTabCompleter implements TabCompleter {
         } else if (args.length == 2) {
             return Arrays.asList("1", "5", "10", "50", "100", "32767");
         } else if (args.length == 3) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[2]);
         }
         return new ArrayList<>();
     }
 
     private List<String> playerTransferTabComplete(String[] args) {
         if (args.length == 1) {
-            return getOnlinePlayerNames();
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         } else if (args.length == 3) {
             return Arrays.asList("25565", "19132", "25575", "25566");
         }
         return new ArrayList<>();
     }
 
-    private List<String> getOnlinePlayerNames() {
-        List<String> names = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            names.add(player.getName());
+    /**
+     * For commands like sudo/skull/freeze where the first arg is always a player target
+     * (no separate "others" permission gating for tab suggestions).
+     */
+    private List<String> playerOnlyTargetTabComplete(String[] args, int playerArgIndex) {
+        if (args.length != playerArgIndex + 1) {
+            return new ArrayList<>();
         }
-        return names;
+        return TargetSelector.getPlayerTabCompletions(args[playerArgIndex]);
+    }
+
+    /**
+     * For commands with explicit <perm>.others gating for suggesting other players.
+     */
+    private List<String> playerTargetTabComplete(CommandSender sender, String[] args, int playerArgIndex, String othersPermission) {
+        if (args.length != playerArgIndex + 1) {
+            return new ArrayList<>();
+        }
+        if (othersPermission != null && !sender.hasPermission(othersPermission)) {
+            return new ArrayList<>();
+        }
+        return TargetSelector.getPlayerTabCompletions(args[playerArgIndex]);
     }
 }

@@ -2,7 +2,7 @@ package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
-import org.bukkit.Bukkit;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.UUID;
+import java.util.List;
 
 public class SkullCommand implements CommandExecutor {
 
@@ -33,13 +33,13 @@ public class SkullCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        String targetName = args[0];
 
-        Player target = Bukkit.getPlayer(targetName);
-        if (target == null) {
+        List<Player> targets = TargetSelector.selectPlayers(sender, args[0]);
+        if (targets.isEmpty()) {
             sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
+        Player target = targets.get(0);
 
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();

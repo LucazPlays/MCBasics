@@ -2,6 +2,7 @@ package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -67,11 +68,12 @@ public class UnsafeEnchantCommand implements CommandExecutor {
 
         Player target;
         if (args.length > 2) {
-            target = Bukkit.getPlayer(args[2]);
-            if (target == null) {
+            List<Player> targets = TargetSelector.selectPlayers(sender, args[2]);
+            if (targets.isEmpty()) {
                 sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
+            target = targets.get(0);
         } else if (sender instanceof Player) {
             target = (Player) sender;
         } else {

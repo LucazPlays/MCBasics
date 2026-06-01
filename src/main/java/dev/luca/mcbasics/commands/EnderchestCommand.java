@@ -2,6 +2,7 @@ package dev.luca.mcbasics.commands;
 
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Permission;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EnderchestCommand implements CommandExecutor, TabCompleter {
@@ -28,11 +28,12 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
         Player target;
         if (args.length > 0 && sender.hasPermission(Permission.ENDERCHEST_OTHERS)) {
-            target = Bukkit.getPlayer(args[0]);
-            if (target == null) {
+            java.util.List<Player> targets = TargetSelector.selectPlayers(sender, args[0]);
+            if (targets.isEmpty()) {
                 sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
                 return true;
             }
+            target = targets.get(0);
         } else {
             target = (Player) sender;
         }
@@ -46,12 +47,9 @@ public class EnderchestCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        List<String> completions = new ArrayList<>();
         if (args.length == 1 && sender.hasPermission(Permission.ENDERCHEST_OTHERS)) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                completions.add(player.getName());
-            }
+            return TargetSelector.getPlayerTabCompletions(args[0]);
         }
-        return completions;
+        return List.of();
     }
 }

@@ -3,12 +3,15 @@ package dev.luca.mcbasics.commands;
 import dev.luca.mcbasics.api.FormattedMessage;
 import dev.luca.mcbasics.api.Message;
 import dev.luca.mcbasics.api.Permission;
+import dev.luca.mcbasics.api.TargetSelector;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -27,11 +30,12 @@ public class SudoCommand implements CommandExecutor {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
-        if (target == null) {
+        List<Player> targets = TargetSelector.selectPlayers(sender, args[0]);
+        if (targets.isEmpty()) {
             sender.sendMessage(FormattedMessage.create("general.player_not_found", "<gradient:#ff6b6b:#ee5a24>✖ Player not found!</gradient>"));
             return true;
         }
+        Player target = targets.get(0);
 
         if (target.equals(sender)) {
             sender.sendMessage(FormattedMessage.create("sudo.cant_sudo_self", "<gradient:#ff6b6b:#ee5a24>✖ You can't sudo yourself!</gradient>"));

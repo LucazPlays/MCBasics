@@ -144,6 +144,8 @@ public class MainTabCompleter implements TabCompleter {
             return TargetSelector.getPlayerTabCompletions(args[0]);
         } else if (args.length == 3) {
             return Arrays.asList("25565", "19132", "25575", "25566");
+        } else if (args.length == 4) {
+            return Arrays.asList("100", "500", "1000", "2000", "5000");
         }
         return new ArrayList<>();
     }

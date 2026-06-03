@@ -29,7 +29,7 @@ public class HelpCommand implements CommandExecutor, TabCompleter {
             new CommandInfo("vanish [p]", "Toggle vanish", Permission.VANISH),
             new CommandInfo("invsee <p>", "Edit inventory live", Permission.INVSEE),
             new CommandInfo("tphere <p>", "Teleport to you", Permission.TPHERE),
-            new CommandInfo("playertransfer <p> <ip> [port] [ms]", "Transfer player to server", Permission.PLAYERTRANSFER),
+            new CommandInfo("playertransfer <p> <ip:port|ip> [ms]", "Transfer player to server", Permission.PLAYERTRANSFER),
             new CommandInfo("freeze <p>", "Freeze/unfreeze player", Permission.FREEZE),
             new CommandInfo("broadcast <msg>", "Broadcast message", Permission.BROADCAST),
             new CommandInfo("day", "Set time to day", Permission.DAY),

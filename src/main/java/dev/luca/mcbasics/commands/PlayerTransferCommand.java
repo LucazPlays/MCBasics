@@ -25,7 +25,7 @@ public class PlayerTransferCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            sender.sendMessage(FormattedMessage.create("playertransfer.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /playertransfer <player> <ip> [port] [millis]</gradient>"));
+            sender.sendMessage(FormattedMessage.create("playertransfer.usage", "<gradient:#ff6b6b:#ee5a24>✖ Usage: /playertransfer <player> <ip:port|ip> [port] [millis]</gradient>"));
             return true;
         }
 
@@ -35,25 +35,44 @@ public class PlayerTransferCommand implements CommandExecutor {
             return true;
         }
 
-        String host = args[1];
+        String host;
         int port = DEFAULT_PORT;
         long intervalMs = DEFAULT_INTERVAL_MS;
+        int nextArgIndex;
 
-        if (args.length >= 3) {
+        if (args[1].contains(":")) {
+            String[] hostPort = args[1].split(":", 2);
+            host = hostPort[0];
             try {
-                port = Integer.parseInt(args[2]);
+                port = Integer.parseInt(hostPort[1]);
                 if (port < 1 || port > 65535) {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                sender.sendMessage(FormattedMessage.create("playertransfer.invalid_port", "<gradient:#ff6b6b:#ee5a24>✖ Invalid port! Must be a number between 1 and 65535.</gradient>"));
+                sender.sendMessage(FormattedMessage.create("playertransfer.invalid_port", "<gradient:#ff6b6b:#ee5a24>✖ Invalid port in ip:port! Must be a number between 1 and 65535.</gradient>"));
                 return true;
+            }
+            nextArgIndex = 2;
+        } else {
+            host = args[1];
+            nextArgIndex = 2;
+
+            if (args.length > 2) {
+                try {
+                    port = Integer.parseInt(args[2]);
+                    if (port < 1 || port > 65535) {
+                        throw new NumberFormatException();
+                    }
+                    nextArgIndex = 3;
+                } catch (NumberFormatException e) {
+                    nextArgIndex = 2;
+                }
             }
         }
 
-        if (args.length >= 4) {
+        if (nextArgIndex < args.length) {
             try {
-                intervalMs = Long.parseLong(args[3]);
+                intervalMs = Long.parseLong(args[nextArgIndex]);
                 if (intervalMs < 0) {
                     throw new NumberFormatException();
                 }

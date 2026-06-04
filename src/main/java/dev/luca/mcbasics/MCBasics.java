@@ -21,6 +21,7 @@ public final class MCBasics extends JavaPlugin {
     public void onEnable() {
         instance = this;
         Message.init(this);
+        VanishManager.init(this);
 
         MinecraftSelfUpdater.start(this, PROJECT_UUID, PROJECT_KEY, true);
 
@@ -55,6 +56,7 @@ public final class MCBasics extends JavaPlugin {
 
     private void registerListeners() {
         registerListener(new PlayerLimitBypassListener());
+        registerListener(new VanishListener());
     }
 
     private void registerCommands() {
